@@ -1,0 +1,410 @@
+basePath: /
+definitions:
+  models.AIResponse:
+    properties:
+      data:
+        $ref: '#/definitions/models.InvestmentAdvice'
+      status:
+        example: success
+        type: string
+    type: object
+  models.AIServiceRequest:
+    properties:
+      age:
+        type: integer
+      amount:
+        type: number
+      currency:
+        type: string
+      investmentHorizon:
+        type: integer
+      investmentKnowledge:
+        type: string
+      investmentPurpose:
+        type: string
+      location:
+        type: string
+      riskTolerance:
+        type: string
+    type: object
+  models.AuthErrorResponse:
+    properties:
+      error:
+        example: Invalid or expired token
+        type: string
+      status:
+        example: error
+        type: string
+    type: object
+  models.ErrorResponse:
+    properties:
+      error:
+        example: Something went wrong
+        type: string
+      status:
+        example: error
+        type: string
+    type: object
+  models.InvestmentAdvice:
+    properties:
+      investmentAdvice:
+        example: Based on your risk tolerance, we recommend a diversified portfolio
+          of stocks and bonds.
+        type: string
+    type: object
+  models.LoginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  models.LoginResponse:
+    properties:
+      status:
+        example: success
+        type: string
+      token:
+        example: jwt.token.here
+        type: string
+    type: object
+  models.LogoutRequest:
+    properties:
+      email:
+        type: string
+    required:
+    - email
+    type: object
+  models.LogoutResponse:
+    properties:
+      message:
+        example: Action successful
+        type: string
+      status:
+        example: success
+        type: string
+    type: object
+  models.PasswordChangeRequest:
+    properties:
+      new_password:
+        minLength: 8
+        type: string
+      token:
+        type: string
+    required:
+    - new_password
+    - token
+    type: object
+  models.PasswordChangeResponse:
+    properties:
+      message:
+        example: Password changed successfully
+        type: string
+      status:
+        example: success
+        type: string
+    type: object
+  models.PasswordResetRequest:
+    properties:
+      email:
+        type: string
+    required:
+    - email
+    type: object
+  models.PasswordResetResponse:
+    properties:
+      message:
+        example: Password reset successful
+        type: string
+      status:
+        example: success
+        type: string
+    type: object
+  models.SignupRequest:
+    properties:
+      email:
+        type: string
+      first_name:
+        type: string
+      last_name:
+        type: string
+      password:
+        type: string
+      username:
+        type: string
+    required:
+    - email
+    - first_name
+    - last_name
+    - password
+    - username
+    type: object
+  models.SignupResponse:
+    properties:
+      message:
+        example: User created successfully
+        type: string
+      status:
+        example: success
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: This is a backend server for authentication and AI interaction.
+  title: Robo-Advisor API
+  version: "1.0"
+paths:
+  /ai/fetch-response/by-days:
+    get:
+      consumes:
+      - application/json
+      description: Retrieval of previous responses from the AI Service
+      parameters:
+      - description: Page number
+        in: query
+        name: page
+        type: integer
+      - description: Number of items per page
+        in: query
+        name: limit
+        type: integer
+      - description: Number of days to go back
+        in: query
+        name: days
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.AIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.AuthErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: AI Service
+      tags:
+      - AI
+  /ai/fetch-response/today:
+    get:
+      consumes:
+      - application/json
+      description: Retrieval of previous responses from the AI Service
+      parameters:
+      - description: Page number
+        in: query
+        name: page
+        type: integer
+      - description: Number of items per page
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.AIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.AuthErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: AI Service
+      tags:
+      - AI
+  /ai/send-request:
+    post:
+      consumes:
+      - application/json
+      description: Interaction with the AI Service
+      parameters:
+      - description: Interaction with the AI Service
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.AIServiceRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.AIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.AuthErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: AI Service
+      tags:
+      - AI
+  /auth/change-password:
+    post:
+      consumes:
+      - application/json
+      description: Generate password reset token and send email
+      parameters:
+      - description: Token and new password for reset
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.PasswordChangeRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.PasswordChangeResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Request password reset
+      tags:
+      - Auth
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Authenticate user and return JWT token
+      parameters:
+      - description: Login credentials
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.LoginResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.AuthErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: User login
+      tags:
+      - Auth
+  /auth/logout:
+    post:
+      consumes:
+      - application/json
+      description: Invalidate user session/token
+      parameters:
+      - description: Email for logout
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.LogoutRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.LogoutResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.AuthErrorResponse'
+      security:
+      - BearerAuth: []
+      - BearerAuth: []
+      summary: User logout
+      tags:
+      - Auth
+  /auth/password-reset:
+    post:
+      consumes:
+      - application/json
+      description: Generate password reset token and send email
+      parameters:
+      - description: Email for password reset
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.PasswordResetRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.PasswordResetResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Request password reset
+      tags:
+      - Auth
+  /auth/signup:
+    post:
+      consumes:
+      - application/json
+      description: Create a new user account
+      parameters:
+      - description: Signup details
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.SignupRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SignupResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Register a new user
+      tags:
+      - Auth
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
