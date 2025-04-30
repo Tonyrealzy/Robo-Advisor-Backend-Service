@@ -3,8 +3,8 @@ package middleware
 import (
 	"errors"
 	"fmt"
-	"robo-advisor-backend-service/config"
-	"robo-advisor-backend-service/models"
+	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/config"
+	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/models"
 	"strconv"
 	"time"
 

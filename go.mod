@@ -1,4 +1,4 @@
-module robo-advisor-backend-service
+module github.com/Tonyrealzy/Robo-Advisor-Backend-Service
 
 go 1.23.5
 

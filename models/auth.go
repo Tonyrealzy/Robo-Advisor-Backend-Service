@@ -2,7 +2,7 @@ package models
 
 import (
 	"log"
-	"robo-advisor-backend-service/config"
+	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/config"
 	"time"
 
 	"gorm.io/gorm"

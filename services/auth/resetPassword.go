@@ -6,9 +6,9 @@ import (
 
 	"gorm.io/gorm"
 
-	"robo-advisor-backend-service/models"
-	"robo-advisor-backend-service/services"
-	"robo-advisor-backend-service/utils"
+	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/models"
+	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/services"
+	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/utils"
 )
 
 func ResetPassword(db *gorm.DB, email string) (string, error) {

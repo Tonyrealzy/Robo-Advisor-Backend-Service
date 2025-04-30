@@ -2,8 +2,8 @@ package ai
 
 import (
 	"net/http"
-	"robo-advisor-backend-service/models"
-	"robo-advisor-backend-service/services"
+	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/models"
+	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/services"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"

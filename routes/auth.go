@@ -3,7 +3,7 @@ package routes
 import (
 	"github.com/gin-gonic/gin"
 
-	"robo-advisor-backend-service/controllers/auth"
+	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/controllers/auth"
 )
 
 func SetupAuthRoutes(router *gin.RouterGroup, controller auth.Controller) {

@@ -1,7 +1,7 @@
 package models
 
 import (
-	"robo-advisor-backend-service/config"
+	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/config"
 
 	"log"
 	"time"

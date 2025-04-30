@@ -3,9 +3,9 @@ package auth
 import (
 	"errors"
 	"fmt"
-	"robo-advisor-backend-service/middleware"
-	"robo-advisor-backend-service/models"
-	"robo-advisor-backend-service/utils"
+	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/middleware"
+	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/models"
+	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/utils"
 	"time"
 
 	"gorm.io/gorm"

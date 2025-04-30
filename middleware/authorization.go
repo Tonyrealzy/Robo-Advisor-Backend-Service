@@ -2,7 +2,7 @@ package middleware
 
 import (
 	"net/http"
-	"robo-advisor-backend-service/models"
+	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/models"
 	"strings"
 	"time"
 

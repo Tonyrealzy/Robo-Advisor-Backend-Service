@@ -1,9 +1,9 @@
 package routes
 
 import (
-	"robo-advisor-backend-service/controllers/ai"
-	"robo-advisor-backend-service/controllers/auth"
-	_ "robo-advisor-backend-service/docs"
+	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/controllers/ai"
+	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/controllers/auth"
+	_ "github.com/Tonyrealzy/Robo-Advisor-Backend-Service/docs"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"

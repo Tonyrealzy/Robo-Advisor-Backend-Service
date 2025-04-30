@@ -3,7 +3,7 @@ package routes
 import (
 	"github.com/gin-gonic/gin"
 
-	"robo-advisor-backend-service/controllers/ai"
+	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/controllers/ai"
 )
 
 func SetupAIRoutes(router *gin.RouterGroup, controller ai.Controller) {
