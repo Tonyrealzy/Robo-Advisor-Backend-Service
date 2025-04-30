@@ -1,9 +1,9 @@
 package config
 
 import (
+	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/models/repository"
 	"log"
 	"os"
-	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/models/repository"
 
 	"github.com/joho/godotenv"
 )
@@ -11,10 +11,15 @@ import (
 var AppConfig repository.Config
 
 func LoadEnv() (repository.Config, error) {
-	err := godotenv.Load()
-	if err != nil {
-		log.Println("No .env file found, relying on environment variables")
-		return AppConfig, err
+	_, loadErr := os.Stat(".env")
+	if loadErr == nil {
+		err := godotenv.Load()
+		if err != nil {
+			log.Printf("Error loading .env file: %v", loadErr)
+			return AppConfig, err
+		}
+	} else {
+		log.Println(".env not found. Using platform environment variables.")
 	}
 
 	AppConfig = repository.Config{
@@ -33,6 +38,7 @@ func LoadEnv() (repository.Config, error) {
 		EmailAddress:     os.Getenv("EMAIL_ADDRESS"),
 		EmailPassword:    os.Getenv("EMAIL_PASSWORD"),
 	}
+	log.Println("Loaded .env file successfully")
 
 	return AppConfig, nil
 }
