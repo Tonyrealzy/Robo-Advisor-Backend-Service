@@ -1,8 +1,8 @@
 // @title Robo-Advisor API
 // @version 1.0
 // @description This is a backend server for authentication and AI interaction.
-// @host https://robo-advisor-backend-service.onrender.com
-// @BasePath /api/
+// @host robo-advisor-backend-service.onrender.com
+// @BasePath /
 // @securityDefinitions.apikey BearerAuth
 // @in header
 // @name Authorization
