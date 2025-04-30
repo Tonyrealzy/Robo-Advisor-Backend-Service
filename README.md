@@ -1,40 +1,107 @@
 # Robo-Advisor AI & Backend Services
 
-## Overview
+## 🧠 Overview
+The **Robo-Advisor AI System** provides intelligent and personalized investment portfolio recommendations for banking customers using artificial intelligence. It analyzes key parameters such as:
 
-The robo-advisor provides personalized investment recommendations and portfolio management services to bank customers. Utilizing artificial intelligence and machine learning algorithms to analyze customer's risk tolerance, investment goals, and financial preferences. The robo-advisor then generates customized investment portfolios tailored to each customer's unique needs, optimizing returns while minimizing risk.
+- Customer's **age**, **location**, and **risk tolerance**
+- Financial **goals**, **investment horizon**, and **knowledge level**
+- Initial **investment amount** and **preferred currency**
 
-- **Backend Service (Go)**: A supporting backend that manages file uploads, metadata, and presigned file access. It's hosted on [https://robo-advisor-backend-service.onrender.com/api](https://robo-advisor-backend-service.onrender.com/api) with Swagger documentation on [https://robo-advisor-backend-service.onrender.com/api/swagger/index.html](https://robo-advisor-backend-service.onrender.com/api/swagger/index.html).
+It returns optimized portfolios that aim to maximize returns within acceptable risk limits, tailored to each user's profile.
+
+---
+
+## 🏗️ Project Structure
+
+```bash
+robo-advisor-backend-service/
+├── config/                 # Configuration management
+├── controllers/            # HTTP controller logic
+├── routes/                 # Route definitions
+├── utils/                  # Utility functions
+├── main.go                 # App entry point
+├── go.mod / go.sum         # Go modules
+├── Dockerfile              # Docker build file
+├── docker-compose.yml      # Multi-service orchestration (optional)
+├── README.md               # Project overview and setup
+└── docs/                   # Swagger docs generated via swag CLI
+```
+
+---
+
+## 🌐 Live Deployment
+
+- **Base API URL**: [https://robo-advisor-backend-service.onrender.com/api](https://robo-advisor-backend-service.onrender.com/api)
+- **Swagger Docs**: [https://robo-advisor-backend-service.onrender.com/api/swagger/index.html](https://robo-advisor-backend-service.onrender.com/api/swagger/index.html)
+
+---
+
+## ⚙️ API Endpoints
+![Sample Endpoints](image.png)
+---
+
+## 📆 Sample Payload for Recommendation
+
+```json
+{
+  "age": 30,
+  "location": "US",
+  "investmentKnowledge": "moderate",
+  "investmentPurpose": "retirement",
+  "investmentHorizon": 10,
+  "riskTolerance": "medium",
+  "amount": 50000,
+  "currency": "USD"
+}
+```
+
+---
 
 ## 🐳 Docker Setup
 
-We use Docker Compose to run both services together.
+### Prerequisites
 
-**Backend Service (Go + Gin)**
+- [Docker](https://www.docker.com/)
+- [Docker Compose](https://docs.docker.com/compose/)
 
-## 🚀 Running Locally with Docker
+### Run Locally
 
-Make sure Docker is installed on your machine. Then run:
+Clone the repository and run:
 
-```
+```bash
 docker-compose up --build
 ```
 
-This will start:
+### Services Started
 
-1. Go backend service on [http://localhost:8080](http://localhost:8080)
-2. Swagger UI on [http://localhost:8000/api/swagger/index.html](http://localhost:5000/api/swagger/index.html)
+- 🟢 **Backend API**: [http://localhost:8080](http://localhost:8080)
+- 🟡 **Swagger UI**: [http://localhost:8080/api/swagger/index.html](http://localhost:8080/api/swagger/index.html)
 
-```
-Sample JSON payload:
-{
-"age": 30,
-"location": "US",
-"investmentKnowledge": "moderate",
-"investmentPurpose": "retirement",
-"investmentHorizon": 10,
-"riskTolerance": "medium",
-"amount": 50000,
-"currency": "USD"
-}
-```
+> Note: Swagger docs are automatically generated with `swag init` and available inside `/docs`.
+
+---
+
+## 💠 Development Tips
+
+- Regenerate Swagger docs after controller updates:
+  ```bash
+  swag init -g main.go
+  ```
+- Auto format code:
+  ```bash
+  go fmt ./...
+  ```
+
+
+## 🤝 Contribution
+
+Pull requests, issues, and feature ideas are welcome!
+
+---
+
+## 📄 License
+
+This project is licensed under the [MIT License](LICENSE).
+
+---
+
