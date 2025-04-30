@@ -13,7 +13,7 @@ import (
 )
 
 func SetupRoutes(router *gin.Engine, db *gorm.DB) {
-	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	router.GET("/api/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	authController := auth.Controller{Db: db}
 	aiController := ai.Controller{Db: db}
