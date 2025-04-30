@@ -1,5 +1,6 @@
 # Use a minimal base image with the specific Go version
-FROM golang:1.2.35-alpine
+FROM golang:1.23.8-alpine
+
 
 # Set the working directory inside the container
 WORKDIR /usr/src/app
