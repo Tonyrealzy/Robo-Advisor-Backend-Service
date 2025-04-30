@@ -1,0 +1,55 @@
+package ai
+
+import (
+	"go-backend/models"
+	"go-backend/services"
+	"net/http"
+
+	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
+)
+
+type Controller struct {
+	Db *gorm.DB
+}
+
+// @Summary      AI Service
+// @Description  Interaction with the AI Service
+// @Tags         AI
+// @Accept       json
+// @Produce      json
+// @Param        body  body      models.AIServiceRequest  true  "Interaction with the AI Service"
+// @Success      200   {object}  models.AIResponse
+// @Failure      400   {object}  models.ErrorResponse
+// @Failure      401   {object}  models.AuthErrorResponse
+// @Security BearerAuth
+// @Router       /ai/send-request [post]
+func (base *Controller) GetAiResponse(c *gin.Context) {
+	var input models.AIServiceRequest
+
+	userRaw, exists := c.Get("user")
+	if !exists {
+		c.JSON(http.StatusUnauthorized, gin.H{"status": "error", "error": "Invalid or expired token"})
+		return
+	}
+
+	user, ok := userRaw.(models.User)
+	if !ok {
+		c.JSON(http.StatusInternalServerError, gin.H{"status": "error", "error": "Failed to fetch user details"})
+		return
+	}
+
+	err := c.BindJSON(&input)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"status": "error", "error": err.Error()})
+		return
+	}
+
+	resp, respErr := services.CallAIService(base.Db, input, user)
+	if respErr != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"status": "error", "error": respErr.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, resp)
+}

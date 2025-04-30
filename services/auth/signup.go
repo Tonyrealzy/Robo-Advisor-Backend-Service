@@ -1,0 +1,43 @@
+package auth
+
+import (
+	"errors"
+	"go-backend/models"
+	"go-backend/utils"
+
+	"gorm.io/gorm"
+)
+
+func Signup(db *gorm.DB, email, password, firstName, lastName, userName string) (*models.User, error) {
+	var user *models.User
+
+	existingUser, err := user.GetUserByEmail(db, email)
+	if err != nil {
+		return nil, err
+	}
+	if existingUser.Name != "" {
+		return nil, errors.New("email already in use")
+	}
+
+	hashedPassword, err := utils.HashPassword(password)
+	if err != nil {
+		return nil, err
+	}
+
+	newUser := models.User{
+		ID:        utils.GenerateUUID(),
+		Name:      userName,
+		Email:     email,
+		Password:  hashedPassword,
+		FirstName: firstName,
+		LastName:  lastName,
+		IsActive:  true,
+	}
+
+	createErr := user.CreateUser(db, &newUser)
+	if createErr != nil {
+		return nil, createErr
+	}
+
+	return &newUser, nil
+}
