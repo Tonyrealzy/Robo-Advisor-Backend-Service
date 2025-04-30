@@ -1,4 +1,4 @@
-basePath: /api/
+basePath: /
 definitions:
   models.AIResponse:
     properties:
@@ -151,7 +151,7 @@ definitions:
         example: success
         type: string
     type: object
-host: https://robo-advisor-backend-service.onrender.com
+host: robo-advisor-backend-service.onrender.com
 info:
   contact: {}
   description: This is a backend server for authentication and AI interaction.

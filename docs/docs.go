@@ -636,8 +636,8 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "https://robo-advisor-backend-service.onrender.com",
-	BasePath:         "/api/",
+	Host:             "robo-advisor-backend-service.onrender.com",
+	BasePath:         "/",
 	Schemes:          []string{},
 	Title:            "Robo-Advisor API",
 	Description:      "This is a backend server for authentication and AI interaction.",
