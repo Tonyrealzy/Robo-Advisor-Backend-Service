@@ -6,8 +6,8 @@
         "contact": {},
         "version": "1.0"
     },
-    "host": "https://robo-advisor-backend-service.onrender.com",
-    "basePath": "/api/",
+    "host": "robo-advisor-backend-service.onrender.com",
+    "basePath": "/",
     "paths": {
         "/ai/fetch-response/by-days": {
             "get": {
