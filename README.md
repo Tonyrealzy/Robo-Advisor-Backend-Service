@@ -31,7 +31,7 @@ robo-advisor-backend-service/
 
 ## 🌐 Live Deployment
 
-- **Base API URL**: [https://robo-advisor-backend-service.onrender.com/api](https://robo-advisor-backend-service.onrender.com/api)
+- **Base API URL**: [https://robo-advisor-backend-service.onrender.com](https://robo-advisor-backend-service.onrender.com)
 - **Swagger Docs**: [https://robo-advisor-backend-service.onrender.com/api/swagger/index.html](https://robo-advisor-backend-service.onrender.com/api/swagger/index.html)
 
 ---
