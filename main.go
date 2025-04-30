@@ -10,10 +10,10 @@
 package main
 
 import (
-	"go-backend/config"
-	"go-backend/middleware"
-	"go-backend/models"
-	"go-backend/routes"
+	"github.com/Tonyrealzy/go-backend/config"
+	"github.com/Tonyrealzy/go-backend/middleware"
+	"github.com/Tonyrealzy/go-backend/models"
+	"github.com/Tonyrealzy/go-backend/routes"
 	"log"
 )
 

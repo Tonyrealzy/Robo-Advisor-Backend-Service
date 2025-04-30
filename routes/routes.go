@@ -3,9 +3,9 @@ package routes
 import (
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
-	"go-backend/controllers/auth"
-	"go-backend/controllers/ai"
-	_ "go-backend/docs"
+	"github.com/Tonyrealzy/go-backend/controllers/auth"
+	"github.com/Tonyrealzy/go-backend/controllers/ai"
+	_ "github.com/Tonyrealzy/go-backend/docs"
 
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"

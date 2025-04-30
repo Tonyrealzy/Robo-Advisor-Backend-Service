@@ -1,7 +1,7 @@
 package models
 
 import (
-	"go-backend/config"
+	"github.com/Tonyrealzy/go-backend/config"
 	"time"
 	"log"
 

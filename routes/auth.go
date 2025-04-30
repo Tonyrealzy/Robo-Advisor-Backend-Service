@@ -3,7 +3,7 @@ package routes
 import (
 	"github.com/gin-gonic/gin"
 
-	"go-backend/controllers/auth"
+	"github.com/Tonyrealzy/go-backend/controllers/auth"
 )
 
 func SetupAuthRoutes(router *gin.RouterGroup, controller auth.Controller) {

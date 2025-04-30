@@ -5,9 +5,9 @@ import (
 	"time"
 	"gorm.io/gorm"
 
-	"go-backend/models"
-	"go-backend/services"
-	"go-backend/utils"
+	"github.com/Tonyrealzy/go-backend/models"
+	"github.com/Tonyrealzy/go-backend/services"
+	"github.com/Tonyrealzy/go-backend/utils"
 )
 
 func ResetPassword(db *gorm.DB, email string) (string, error) {

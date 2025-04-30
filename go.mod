@@ -1,4 +1,4 @@
-module go-backend
+module github.com/Tonyrealzy/go-backend
 
 go 1.23.5
 

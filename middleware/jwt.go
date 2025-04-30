@@ -3,8 +3,8 @@ package middleware
 import (
 	"errors"
 	"fmt"
-	"go-backend/config"
-	"go-backend/models"
+	"github.com/Tonyrealzy/go-backend/config"
+	"github.com/Tonyrealzy/go-backend/models"
 	"strconv"
 	"time"
 

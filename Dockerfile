@@ -1,23 +1,29 @@
-# Use Go base image
-FROM golang:1.23 AS builder
+# Use a specific version of the Golang base image
+FROM golang:1.23.5-alpine AS builder
 
-# Set the Current Working Directory inside the container
+# Set working directory
 WORKDIR /app
 
-# Copy the go.mod and go.sum files first to download the dependencies
+# Copy go.mod and go.sum
 COPY go.mod go.sum ./
 
-# Download all dependencies. Dependencies will be cached if the go.mod and go.sum files are not changed
+# Download dependencies
 RUN go mod tidy
 
-# Copy the source code into the container
+# Copy the full project
 COPY . .
 
-# Build the Go app
+# Build the app binary
 RUN go build -o app .
 
-# Expose port 8080 to be accessible outside the container
+# Final image
+FROM gcr.io/distroless/base-debian10
+
+WORKDIR /app
+COPY --from=builder /app/app .
+
+# Expose app port (change if needed)
 EXPOSE 8080
 
-# Run the Go binary
+# Start the app
 CMD ["./app"]

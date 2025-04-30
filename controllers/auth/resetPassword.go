@@ -1,8 +1,8 @@
 package auth
 
 import (
-	"go-backend/models"
-	"go-backend/services/auth"
+	"github.com/Tonyrealzy/go-backend/models"
+	"github.com/Tonyrealzy/go-backend/services/auth"
 	"net/http"
 	
 	"github.com/gin-gonic/gin"
