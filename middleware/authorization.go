@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	"go-backend/models"
+	"github.com/Tonyrealzy/go-backend/models"
 	"net/http"
 	"strings"
 	"time"

@@ -1,8 +1,8 @@
 package ai
 
 import (
-	"go-backend/models"
-	"go-backend/services"
+	"github.com/Tonyrealzy/go-backend/models"
+	"github.com/Tonyrealzy/go-backend/services"
 	"net/http"
 
 	"github.com/gin-gonic/gin"

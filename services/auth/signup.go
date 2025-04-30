@@ -2,8 +2,8 @@ package auth
 
 import (
 	"errors"
-	"go-backend/models"
-	"go-backend/utils"
+	"github.com/Tonyrealzy/go-backend/models"
+	"github.com/Tonyrealzy/go-backend/utils"
 
 	"gorm.io/gorm"
 )

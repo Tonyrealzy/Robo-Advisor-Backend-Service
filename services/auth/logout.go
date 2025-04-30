@@ -2,7 +2,7 @@ package auth
 
 import (
 	"fmt"
-	"go-backend/models"
+	"github.com/Tonyrealzy/go-backend/models"
 
 	"gorm.io/gorm"
 )

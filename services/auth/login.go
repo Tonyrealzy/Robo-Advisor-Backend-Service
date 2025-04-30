@@ -3,9 +3,9 @@ package auth
 import (
 	"errors"
 	"fmt"
-	"go-backend/middleware"
-	"go-backend/models"
-	"go-backend/utils"
+	"github.com/Tonyrealzy/go-backend/middleware"
+	"github.com/Tonyrealzy/go-backend/models"
+	"github.com/Tonyrealzy/go-backend/utils"
 	"time"
 
 	"gorm.io/gorm"
