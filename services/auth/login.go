@@ -3,9 +3,9 @@ package auth
 import (
 	"errors"
 	"fmt"
-	"github.com/Tonyrealzy/go-backend/middleware"
-	"github.com/Tonyrealzy/go-backend/models"
-	"github.com/Tonyrealzy/go-backend/utils"
+	"robo-advisor-backend-service/middleware"
+	"robo-advisor-backend-service/models"
+	"robo-advisor-backend-service/utils"
 	"time"
 
 	"gorm.io/gorm"
@@ -35,7 +35,7 @@ func Login(db *gorm.DB, email, password string) (string, error) {
 		Token:     token,
 		ExpiresAt: time.Now().Add(time.Minute * 30),
 	}
-	
+
 	createErr := session.CreateUserSession(db, &userToken)
 	if createErr != nil {
 		return "", createErr

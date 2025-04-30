@@ -3,11 +3,12 @@ package auth
 import (
 	"fmt"
 	"time"
+
 	"gorm.io/gorm"
 
-	"github.com/Tonyrealzy/go-backend/models"
-	"github.com/Tonyrealzy/go-backend/services"
-	"github.com/Tonyrealzy/go-backend/utils"
+	"robo-advisor-backend-service/models"
+	"robo-advisor-backend-service/services"
+	"robo-advisor-backend-service/utils"
 )
 
 func ResetPassword(db *gorm.DB, email string) (string, error) {

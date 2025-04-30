@@ -1,9 +1,9 @@
 package services
 
 import (
-	"github.com/Tonyrealzy/go-backend/config"
-	"github.com/Tonyrealzy/go-backend/models"
-	"github.com/Tonyrealzy/go-backend/utils"
+	"robo-advisor-backend-service/config"
+	"robo-advisor-backend-service/models"
+	"robo-advisor-backend-service/utils"
 
 	"encoding/json"
 	"fmt"

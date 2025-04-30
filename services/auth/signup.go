@@ -2,8 +2,8 @@ package auth
 
 import (
 	"errors"
-	"github.com/Tonyrealzy/go-backend/models"
-	"github.com/Tonyrealzy/go-backend/utils"
+	"robo-advisor-backend-service/models"
+	"robo-advisor-backend-service/utils"
 
 	"gorm.io/gorm"
 )

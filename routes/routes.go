@@ -1,11 +1,12 @@
 package routes
 
 import (
+	"robo-advisor-backend-service/controllers/ai"
+	"robo-advisor-backend-service/controllers/auth"
+	_ "robo-advisor-backend-service/docs"
+
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
-	"github.com/Tonyrealzy/go-backend/controllers/auth"
-	"github.com/Tonyrealzy/go-backend/controllers/ai"
-	_ "github.com/Tonyrealzy/go-backend/docs"
 
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"

@@ -1,8 +1,8 @@
 package middleware
 
 import (
-	"github.com/Tonyrealzy/go-backend/models"
 	"net/http"
+	"robo-advisor-backend-service/models"
 	"strings"
 	"time"
 

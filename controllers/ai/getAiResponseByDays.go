@@ -1,10 +1,10 @@
 package ai
 
 import (
-	"github.com/Tonyrealzy/go-backend/config"
-	"github.com/Tonyrealzy/go-backend/models"
-	"github.com/Tonyrealzy/go-backend/services"
 	"net/http"
+	"robo-advisor-backend-service/config"
+	"robo-advisor-backend-service/models"
+	"robo-advisor-backend-service/services"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
