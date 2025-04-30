@@ -3,7 +3,7 @@ package routes
 import (
 	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/controllers/ai"
 	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/controllers/auth"
-	_ "github.com/Tonyrealzy/Robo-Advisor-Backend-Service/docs"
+	// _ "github.com/Tonyrealzy/Robo-Advisor-Backend-Service/docs"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
