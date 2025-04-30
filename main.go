@@ -11,16 +11,14 @@ package main
 
 import (
 	"log"
-
-	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/config"
 	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/middleware"
 	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/models"
+	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/config"
 	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/routes"
-	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/utils"
 )
 
 func main() {
-	_, err := utils.LoadEnv()
+	_, err := config.LoadEnv()
 	if err != nil {
 		log.Fatalf("Failed to load env credentials: %v", err)
 	}
@@ -41,7 +39,7 @@ func main() {
 
 	routes.SetupRoutes(router, db)
 
-	port := utils.AppConfig.Port
+	port := config.AppConfig.Port
 	if port == "" {
 		port = "8080"
 	}
