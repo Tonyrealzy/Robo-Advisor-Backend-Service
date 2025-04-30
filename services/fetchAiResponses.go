@@ -1,8 +1,8 @@
 package services
 
 import (
-	"robo-advisor-backend-service/config"
-	"robo-advisor-backend-service/models"
+	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/config"
+	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/models"
 
 	"gorm.io/gorm"
 )

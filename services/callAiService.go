@@ -1,10 +1,9 @@
 package services
 
 import (
-	"robo-advisor-backend-service/config"
-	"robo-advisor-backend-service/models"
-	"robo-advisor-backend-service/utils"
-
+	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/config"
+	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/models"
+	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/utils"
 	"encoding/json"
 	"fmt"
 	"log"

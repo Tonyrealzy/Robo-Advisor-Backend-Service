@@ -11,10 +11,10 @@ package main
 
 import (
 	"log"
-	"robo-advisor-backend-service/config"
-	"robo-advisor-backend-service/middleware"
-	"robo-advisor-backend-service/models"
-	"robo-advisor-backend-service/routes"
+	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/config"
+	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/middleware"
+	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/models"
+	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/routes"
 )
 
 func main() {

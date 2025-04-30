@@ -2,8 +2,8 @@ package auth
 
 import (
 	"net/http"
-	"robo-advisor-backend-service/models"
-	"robo-advisor-backend-service/services/auth"
+	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/models"
+	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/services/auth"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
