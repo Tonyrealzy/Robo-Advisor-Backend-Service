@@ -1,9 +1,9 @@
 package auth
 
 import (
-	"github.com/Tonyrealzy/go-backend/models"
-	"github.com/Tonyrealzy/go-backend/services/auth"
 	"net/http"
+	"robo-advisor-backend-service/models"
+	"robo-advisor-backend-service/services/auth"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"

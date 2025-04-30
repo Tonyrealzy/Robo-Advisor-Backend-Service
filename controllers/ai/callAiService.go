@@ -1,9 +1,9 @@
 package ai
 
 import (
-	"github.com/Tonyrealzy/go-backend/models"
-	"github.com/Tonyrealzy/go-backend/services"
 	"net/http"
+	"robo-advisor-backend-service/models"
+	"robo-advisor-backend-service/services"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"

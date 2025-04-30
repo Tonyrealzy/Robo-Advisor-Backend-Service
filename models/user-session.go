@@ -1,9 +1,9 @@
 package models
 
 import (
-	"github.com/Tonyrealzy/go-backend/config"
-	"time"
 	"log"
+	"robo-advisor-backend-service/config"
+	"time"
 
 	"gorm.io/gorm"
 )
@@ -52,7 +52,7 @@ func (u *UserSession) GetUserSession(db *gorm.DB, userID string, token string) (
 
 func (u *UserSession) DeleteUserSession(db *gorm.DB, userID string) error {
 	var userSession UserSession
-	
+
 	err := config.DeleteSpecificRecord(db, userSession, "user_id = ?", userID)
 	if err != nil {
 		log.Printf("Error deleting user session: %v", err)

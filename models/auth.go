@@ -1,8 +1,8 @@
 package models
 
 import (
-	"github.com/Tonyrealzy/go-backend/config"
 	"log"
+	"robo-advisor-backend-service/config"
 	"time"
 
 	"gorm.io/gorm"

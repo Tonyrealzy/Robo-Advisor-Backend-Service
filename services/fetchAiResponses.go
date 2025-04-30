@@ -1,8 +1,8 @@
 package services
 
 import (
-	"github.com/Tonyrealzy/go-backend/config"
-	"github.com/Tonyrealzy/go-backend/models"
+	"robo-advisor-backend-service/config"
+	"robo-advisor-backend-service/models"
 
 	"gorm.io/gorm"
 )

@@ -10,11 +10,11 @@
 package main
 
 import (
-	"github.com/Tonyrealzy/go-backend/config"
-	"github.com/Tonyrealzy/go-backend/middleware"
-	"github.com/Tonyrealzy/go-backend/models"
-	"github.com/Tonyrealzy/go-backend/routes"
 	"log"
+	"robo-advisor-backend-service/config"
+	"robo-advisor-backend-service/middleware"
+	"robo-advisor-backend-service/models"
+	"robo-advisor-backend-service/routes"
 )
 
 func main() {
