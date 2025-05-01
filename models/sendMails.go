@@ -1,7 +1,7 @@
 package models
 
 import (
-	"log"
+	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/internal/logger"
 	"gopkg.in/gomail.v2"
 )
 
@@ -23,7 +23,7 @@ func SendEmail(cfg Email, to []string, subject, body string) error {
 	d := gomail.NewDialer(cfg.SMTPHost, cfg.SMTPPort, cfg.SenderEmail, cfg.SenderPass)
 
 	if err := d.DialAndSend(m); err != nil {
-		log.Printf("Error sending mail: %v", err)
+		logger.Log.Printf("Error sending mail: %v", err)
 		return err
 	}
 

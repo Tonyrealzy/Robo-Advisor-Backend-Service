@@ -2,9 +2,9 @@ package services
 
 import (
 	"fmt"
-	"log"
 	"os"
 
+	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/internal/logger"
 	mailjet "github.com/mailjet/mailjet-apiv3-go/v4"
 )
 
@@ -34,9 +34,10 @@ func SendResetEmail(toEmail, toName, resetLink string) error {
 
 	res, err := mj.SendMailV31(&messages)
 	if err != nil {
+		logger.Log.Printf("error sending email: %v", err)
 		return fmt.Errorf("error sending email: %w", err)
 	}
 
-	log.Printf("Email sent! Response: %+v\n", res)
+	logger.Log.Printf("Email sent! Response: %+v\n", res)
 	return nil
 }

@@ -2,10 +2,9 @@ package models
 
 import (
 	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/config"
+	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/internal/logger"
 
-	"log"
 	"time"
-
 	"gorm.io/datatypes"
 	"gorm.io/gorm"
 )
@@ -46,7 +45,7 @@ func (a *AIPersistedResponse) GetAllAIResponses(db *gorm.DB, userID string) (*AI
 
 	err := config.FindByID(db, interaction, userID)
 	if err != nil {
-		log.Printf("Error getting all AI responses: %v", err)
+		logger.Log.Printf("Error getting all AI responses: %v", err)
 		return nil, err
 	}
 
@@ -64,7 +63,7 @@ func (a *AIPersistedResponse) GetTodayResponse(db *gorm.DB, userID string, pagin
 		"created_at <= ?", end,
 		pagination)
 	if err != nil {
-		log.Printf("Error getting today's AI responses: %v", err)
+		logger.Log.Printf("Error getting today's AI responses: %v", err)
 		return nil, err
 	}
 
@@ -78,7 +77,7 @@ func (a *AIPersistedResponse) GetResponseByNoOfDays(db *gorm.DB, userID string, 
 	var results []AIPersistedResponse
 	err := config.FindByUserAndDateRangePaginated(db, &results, userID, start, now, pagination)
 	if err != nil {
-		log.Printf("Error getting all AI responses by number of days: %v", err)
+		logger.Log.Printf("Error getting all AI responses by number of days: %v", err)
 		return nil, err
 	}
 

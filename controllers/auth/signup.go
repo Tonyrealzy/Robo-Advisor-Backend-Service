@@ -2,6 +2,7 @@ package auth
 
 import (
 	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/models"
+	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/internal/logger"
 	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/services/auth"
 	"net/http"
 
@@ -39,5 +40,6 @@ func (base *Controller) Signup(c *gin.Context) {
 		return
 	}
 
+	logger.Log.Println("Response successful!")
 	c.JSON(http.StatusOK, gin.H{"status": "success", "message": "User created successfully", "data": linkMsg})
 }

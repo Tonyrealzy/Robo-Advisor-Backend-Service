@@ -8,8 +8,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// @Summary      Confirm mail by link sent
-// @Description  Confirm email used for signup
+// @Summary      Confirm email
+// @Description  Use hashed token to confirm email used in signup
 // @Tags         Auth
 // @Accept       json
 // @Produce      json

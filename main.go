@@ -10,29 +10,32 @@
 package main
 
 import (
-	"log"
+	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/config"
+	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/internal/logger"
 	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/middleware"
 	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/models"
-	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/config"
 	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/routes"
 )
 
 func main() {
+	logger.InitLogger()
+	logger.Log.Info("Starting Robo Advisor Backend Service")
+
 	_, err := config.LoadEnv()
 	if err != nil {
-		log.Fatalf("Failed to load env credentials: %v", err)
+		logger.Log.Errorf("Failed to load env credentials: %v", err)
 	}
 
 	db := config.ConnectToDatabase()
 	if db != nil {
-		log.Println("Ready to go!")
+		logger.Log.Println("Ready to go!")
 	}
 
 	dbErr := db.AutoMigrate(&models.User{}, &models.PasswordReset{}, &models.UserSession{}, &models.AIPersistedResponse{})
 	if dbErr != nil {
-		log.Fatalf("Migration failed: %v", dbErr)
+		logger.Log.Fatalf("Migration failed: %v", dbErr)
 	} else {
-		log.Println("Database auto-migrated successfully!")
+		logger.Log.Println("Database auto-migrated successfully!")
 	}
 
 	router := middleware.SetupRouter()
@@ -46,6 +49,6 @@ func main() {
 
 	startErr := router.Run(":" + port)
 	if startErr != nil {
-		log.Fatalf("Server failed: %v", startErr)
+		logger.Log.Fatalf("Server failed: %v", startErr)
 	}
 }

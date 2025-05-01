@@ -6,6 +6,7 @@ import (
 
 	"gorm.io/gorm"
 
+	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/internal/logger"
 	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/models"
 	// "github.com/Tonyrealzy/Robo-Advisor-Backend-Service/services"
 	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/utils"
@@ -17,15 +18,17 @@ func ResetPassword(db *gorm.DB, email string) (string, error) {
 
 	existingUser, err := user.GetUserByEmail(db, email)
 	if err != nil {
+		logger.Log.Printf("user not found: %v", err)
 		return "", fmt.Errorf("user not found: %v", err)
 	}
 
 	tokenString := fmt.Sprintf("%s-%s-%s", email, existingUser.ID, time.Now().String())
 	hashedToken, err := utils.HashPassword(tokenString)
 	if err != nil {
+		logger.Log.Printf("Error hashing password: %v", err)
 		return "", err
 	}
-
+	
 	passwordReset := models.PasswordReset{
 		ID:        utils.GenerateUUID(),
 		UserID:    existingUser.ID,
@@ -34,6 +37,7 @@ func ResetPassword(db *gorm.DB, email string) (string, error) {
 	}
 	createErr := password.CreatePasswordReset(db, &passwordReset)
 	if createErr != nil {
+		logger.Log.Printf("Error resetting password: %v", createErr)
 		return "", createErr
 	}
 

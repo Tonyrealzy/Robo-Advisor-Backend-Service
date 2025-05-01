@@ -6,6 +6,7 @@ import (
 
 	"gorm.io/gorm"
 
+	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/internal/logger"
 	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/models"
 	// "github.com/Tonyrealzy/Robo-Advisor-Backend-Service/services"
 	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/utils"
@@ -17,9 +18,10 @@ func SendLinkToUser(db *gorm.DB, existingUser *models.User, email string) (strin
 	tokenString := fmt.Sprintf("%s-%s-%s", email, existingUser.ID, time.Now().String())
 	hashedToken, err := utils.HashPassword(tokenString)
 	if err != nil {
+		logger.Log.Printf("error hashing password: %v", err)
 		return "", err
 	}
-
+	
 	passwordReset := models.PasswordReset{
 		ID:        utils.GenerateUUID(),
 		UserID:    existingUser.ID,
@@ -28,6 +30,7 @@ func SendLinkToUser(db *gorm.DB, existingUser *models.User, email string) (strin
 	}
 	createErr := password.CreatePasswordReset(db, &passwordReset)
 	if createErr != nil {
+		logger.Log.Printf("error resetting password: %v", createErr)
 		return "", createErr
 	}
 

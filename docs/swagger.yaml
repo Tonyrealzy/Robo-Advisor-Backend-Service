@@ -464,7 +464,7 @@ paths:
     post:
       consumes:
       - application/json
-      description: Confirm email used for signup
+      description: Use hashed token to confirm email used in signup
       parameters:
       - description: Token and email for confirmation
         in: body
@@ -487,7 +487,7 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/models.ServerErrorResponse'
-      summary: Confirm mail by link sent
+      summary: Confirm email
       tags:
       - Auth
 securityDefinitions:

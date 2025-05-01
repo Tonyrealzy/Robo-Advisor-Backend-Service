@@ -3,6 +3,7 @@ package services
 import (
 	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/config"
 	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/models"
+	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/internal/logger"
 
 	"fmt"
 
@@ -30,6 +31,7 @@ func SendEmail(db *gorm.DB, email []string, hashedToken string) error {
 
 	err := models.SendEmail(emailConfig, email, subject, body)
 	if err != nil {
+		logger.Log.Printf("error sending email: %v", err)
 		return err
 	}
 

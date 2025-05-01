@@ -1,10 +1,11 @@
 package ai
 
 import (
-	"net/http"
 	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/config"
+	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/internal/logger"
 	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/models"
 	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/services"
+	"net/http"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -27,24 +28,28 @@ import (
 func (base *Controller) GetPreviousAiResponseByNoOfDays(c *gin.Context) {
 	userRaw, exists := c.Get("user")
 	if !exists {
+		logger.Log.Println("Invalid or expired token")
 		c.JSON(http.StatusUnauthorized, gin.H{"status": "error", "error": "Invalid or expired token"})
 		return
 	}
 
 	user, ok := userRaw.(models.User)
 	if !ok {
+		logger.Log.Println("Failed to fetch user details")
 		c.JSON(http.StatusInternalServerError, gin.H{"status": "error", "error": "Failed to fetch user details"})
 		return
 	}
 
 	daysStr := c.Query("days")
 	if daysStr == "" {
+		logger.Log.Println("days parameter is required")
 		c.JSON(http.StatusBadRequest, gin.H{"status": "error", "error": "days parameter is required"})
 		return
 	}
 
 	days, err := strconv.Atoi(daysStr)
 	if err != nil || days <= 0 {
+		logger.Log.Println("invalid days value")
 		c.JSON(http.StatusBadRequest, gin.H{"status": "error", "error": "invalid days value"})
 		return
 	}
@@ -56,6 +61,7 @@ func (base *Controller) GetPreviousAiResponseByNoOfDays(c *gin.Context) {
 		return
 	}
 
+	logger.Log.Println("Response successful!")
 	c.JSON(http.StatusOK, gin.H{
 		"status": "success",
 		"data":   responses,

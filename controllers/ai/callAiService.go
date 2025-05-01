@@ -2,6 +2,8 @@ package ai
 
 import (
 	"net/http"
+
+	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/internal/logger"
 	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/models"
 	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/services"
 
@@ -30,27 +32,31 @@ func (base *Controller) GetAiResponse(c *gin.Context) {
 
 	userRaw, exists := c.Get("user")
 	if !exists {
+		logger.Log.Println("Invalid or expired token")
 		c.JSON(http.StatusUnauthorized, gin.H{"status": "error", "error": "Invalid or expired token"})
 		return
 	}
-
+	
 	user, ok := userRaw.(models.User)
 	if !ok {
+		logger.Log.Println("Failed to fetch user details")
 		c.JSON(http.StatusInternalServerError, gin.H{"status": "error", "error": "Failed to fetch user details"})
 		return
 	}
-
+	
 	err := c.BindJSON(&input)
 	if err != nil {
+		logger.Log.Println("Failed to bind JSON input")
 		c.JSON(http.StatusBadRequest, gin.H{"status": "error", "error": err.Error()})
 		return
 	}
-
+	
 	resp, respErr := services.CallAIService(base.Db, input, user)
 	if respErr != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"status": "error", "error": respErr.Error()})
 		return
 	}
-
+	
+	logger.Log.Println("Response successful!")
 	c.JSON(http.StatusOK, resp)
 }

@@ -445,7 +445,7 @@ const docTemplate = `{
         },
         "/auth/signup/confirm": {
             "post": {
-                "description": "Confirm email used for signup",
+                "description": "Use hashed token to confirm email used in signup",
                 "consumes": [
                     "application/json"
                 ],
@@ -455,7 +455,7 @@ const docTemplate = `{
                 "tags": [
                     "Auth"
                 ],
-                "summary": "Confirm mail by link sent",
+                "summary": "Confirm email",
                 "parameters": [
                     {
                         "description": "Token and email for confirmation",

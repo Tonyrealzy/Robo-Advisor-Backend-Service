@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/internal/logger"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
@@ -26,6 +27,7 @@ func SetupRouter() *gin.Engine {
 	r.Use(SecurityHeadersMiddleware())
 
 	r.NoRoute(func(c *gin.Context) {
+		logger.Log.Println("Route Not found")
 		c.JSON(http.StatusNotFound, gin.H{
 			"status":  "error",
 			"message": "Route not found",

@@ -2,7 +2,7 @@ package models
 
 import (
 	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/config"
-	"log"
+	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/internal/logger"
 	"time"
 
 	"gorm.io/gorm"
@@ -34,7 +34,7 @@ type ConfirmSignupRequest struct {
 func (p *PasswordReset) CreatePasswordReset(db *gorm.DB, passReset *PasswordReset) error {
 	err := config.CreateOneRecord(db, passReset)
 	if err != nil {
-		log.Printf("Error creating password reset: %v", err)
+		logger.Log.Printf("Error creating password reset model: %v", err)
 		return err
 	}
 
