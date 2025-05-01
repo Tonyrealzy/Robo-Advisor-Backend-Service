@@ -14,16 +14,15 @@ func ConnectToDatabase() *gorm.DB {
 		AppConfig.PostgresDB,
 		AppConfig.PostgresPort,
 		AppConfig.PostgresSslMode,
-		AppConfig.PostgresTimezone,
 	)
-	
+
 	log.Println("Database connected successfully")
 
 	return connectedDB
 }
 
-func connectToDb(host, user, password, dbname, port, sslmode, timezone string) *gorm.DB {
-	dsn := fmt.Sprintf("host=%v user=%v password=%v dbname=%v port=%v sslmode=%v TimeZone=%v", host, user, password, dbname, port, sslmode, timezone)
+func connectToDb(host, user, password, dbname, port, sslmode string) *gorm.DB {
+	dsn := fmt.Sprintf("host=%v user=%v password=%v dbname=%v port=%v sslmode=%v TimeZone=%v", host, user, password, dbname, port, sslmode)
 
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 

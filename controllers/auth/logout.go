@@ -17,6 +17,7 @@ import (
 // @Param        body  body      models.LogoutRequest  true  "Email for logout"
 // @Success      200   {object}  models.LogoutResponse
 // @Failure      401   {object}  models.AuthErrorResponse
+// @Failure      500   {object}  models.ServerErrorResponse
 // @Security BearerAuth
 // @Router       /auth/logout [post]
 func (base *Controller) Logout(c *gin.Context) {

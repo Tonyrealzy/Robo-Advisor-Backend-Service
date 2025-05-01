@@ -36,6 +36,25 @@ definitions:
         example: error
         type: string
     type: object
+  models.ConfirmSignupRequest:
+    properties:
+      email:
+        type: string
+      token:
+        type: string
+    required:
+    - email
+    - token
+    type: object
+  models.ConfirmSignupResponse:
+    properties:
+      message:
+        example: User status updated successfully
+        type: string
+      status:
+        example: success
+        type: string
+    type: object
   models.ErrorResponse:
     properties:
       error:
@@ -123,6 +142,15 @@ definitions:
         example: success
         type: string
     type: object
+  models.ServerErrorResponse:
+    properties:
+      error:
+        example: Internal Server Error
+        type: string
+      status:
+        example: error
+        type: string
+    type: object
   models.SignupRequest:
     properties:
       email:
@@ -158,7 +186,7 @@ info:
   title: Robo-Advisor API
   version: "1.0"
 paths:
-  /ai/fetch-response/by-days:
+  /ai/fetch-response/days:
     get:
       consumes:
       - application/json
@@ -192,6 +220,10 @@ paths:
           description: Unauthorized
           schema:
             $ref: '#/definitions/models.AuthErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ServerErrorResponse'
       security:
       - BearerAuth: []
       summary: AI Service
@@ -226,6 +258,10 @@ paths:
           description: Unauthorized
           schema:
             $ref: '#/definitions/models.AuthErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ServerErrorResponse'
       security:
       - BearerAuth: []
       summary: AI Service
@@ -258,6 +294,10 @@ paths:
           description: Unauthorized
           schema:
             $ref: '#/definitions/models.AuthErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ServerErrorResponse'
       security:
       - BearerAuth: []
       summary: AI Service
@@ -286,6 +326,10 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ServerErrorResponse'
       summary: Request password reset
       tags:
       - Auth
@@ -316,8 +360,10 @@ paths:
           description: Unauthorized
           schema:
             $ref: '#/definitions/models.AuthErrorResponse'
-      security:
-      - BearerAuth: []
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ServerErrorResponse'
       summary: User login
       tags:
       - Auth
@@ -344,6 +390,10 @@ paths:
           description: Unauthorized
           schema:
             $ref: '#/definitions/models.AuthErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ServerErrorResponse'
       security:
       - BearerAuth: []
       - BearerAuth: []
@@ -373,6 +423,10 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ServerErrorResponse'
       summary: Request password reset
       tags:
       - Auth
@@ -399,7 +453,41 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ServerErrorResponse'
       summary: Register a new user
+      tags:
+      - Auth
+  /auth/signup/confirm:
+    post:
+      consumes:
+      - application/json
+      description: Confirm email used for signup
+      parameters:
+      - description: Token and email for confirmation
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.ConfirmSignupRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ConfirmSignupResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ServerErrorResponse'
+      summary: Confirm mail by link sent
       tags:
       - Auth
 securityDefinitions:

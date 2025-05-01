@@ -1,9 +1,11 @@
 package middleware
 
 import (
+	"net/http"
+	"time"
+
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"time"
 )
 
 func SetupRouter() *gin.Engine {
@@ -18,7 +20,17 @@ func SetupRouter() *gin.Engine {
 		MaxAge:           12 * time.Hour,
 	}))
 
+	r.Use(gin.Logger())
+	r.Use(gin.Recovery())
+	r.Use(ErrorHandlingMiddleware())
 	r.Use(SecurityHeadersMiddleware())
+
+	r.NoRoute(func(c *gin.Context) {
+		c.JSON(http.StatusNotFound, gin.H{
+			"status":  "error",
+			"message": "Route not found",
+		})
+	})
 
 	return r
 }

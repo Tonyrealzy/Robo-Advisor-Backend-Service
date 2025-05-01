@@ -21,8 +21,9 @@ import (
 // @Success      200   {object}  models.AIResponse
 // @Failure      400   {object}  models.ErrorResponse
 // @Failure      401   {object}  models.AuthErrorResponse
+// @Failure      500   {object}  models.ServerErrorResponse
 // @Security BearerAuth
-// @Router       /ai/fetch-response/by-days [get]
+// @Router       /ai/fetch-response/days [get]
 func (base *Controller) GetPreviousAiResponseByNoOfDays(c *gin.Context) {
 	userRaw, exists := c.Get("user")
 	if !exists {

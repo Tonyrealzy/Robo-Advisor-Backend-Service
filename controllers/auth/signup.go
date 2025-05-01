@@ -1,9 +1,9 @@
 package auth
 
 import (
-	"net/http"
 	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/models"
 	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/services/auth"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
@@ -16,6 +16,7 @@ import (
 // @Param        body  body      models.SignupRequest  true  "Signup details"
 // @Success      200   {object}  models.SignupResponse
 // @Failure      400   {object}  models.ErrorResponse
+// @Failure      500   {object}  models.ServerErrorResponse
 // @Router       /auth/signup [post]
 func (base *Controller) Signup(c *gin.Context) {
 	var input models.SignupRequest
@@ -26,11 +27,17 @@ func (base *Controller) Signup(c *gin.Context) {
 		return
 	}
 
-	_, signupErr := auth.Signup(base.Db, input.Email, input.Password, input.FirstName, input.LastName, input.Name)
+	signupUser, signupErr := auth.Signup(base.Db, input.Email, input.Password, input.FirstName, input.LastName, input.Name)
 	if signupErr != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"status": "error", "error": signupErr.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"status": "success", "message": "User created successfully"})
+	linkMsg, linkErr := auth.SendLinkToUser(base.Db, signupUser, input.Email)
+	if linkErr != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"status": "error", "error": linkErr.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"status": "success", "message": "User created successfully", "data": linkMsg})
 }

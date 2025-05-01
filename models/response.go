@@ -10,6 +10,11 @@ type ErrorResponse struct {
 	Error  string `json:"error" example:"Something went wrong"`
 }
 
+type ServerErrorResponse struct {
+	Status string `json:"status" example:"error"`
+	Error  string `json:"error" example:"Internal Server Error"`
+}
+
 type AuthErrorResponse struct {
 	Status string `json:"status" example:"error"`
 	Error  string `json:"error" example:"Invalid or expired token"`
@@ -28,6 +33,11 @@ type LogoutResponse struct {
 type PasswordResetResponse struct {
 	Status  string `json:"status" example:"success"`
 	Message string `json:"message" example:"Password reset successful"`
+}
+
+type ConfirmSignupResponse struct {
+	Status  string `json:"status" example:"success"`
+	Message string `json:"message" example:"User status updated successfully"`
 }
 
 type PasswordChangeResponse struct {

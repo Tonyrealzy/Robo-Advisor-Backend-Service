@@ -2,6 +2,7 @@ package auth
 
 import (
 	"errors"
+
 	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/models"
 	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/utils"
 
@@ -11,10 +12,7 @@ import (
 func Signup(db *gorm.DB, email, password, firstName, lastName, userName string) (*models.User, error) {
 	var user *models.User
 
-	existingUser, err := user.GetUserByEmail(db, email)
-	if err != nil {
-		return nil, err
-	}
+	existingUser, _ := user.GetUserByEmail(db, email)
 	if existingUser.Name != "" {
 		return nil, errors.New("email already in use")
 	}
@@ -31,7 +29,6 @@ func Signup(db *gorm.DB, email, password, firstName, lastName, userName string) 
 		Password:  hashedPassword,
 		FirstName: firstName,
 		LastName:  lastName,
-		IsActive:  true,
 	}
 
 	createErr := user.CreateUser(db, &newUser)

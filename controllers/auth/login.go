@@ -22,7 +22,7 @@ type Controller struct {
 // @Success      200   {object}  models.LoginResponse
 // @Failure      400   {object}  models.ErrorResponse
 // @Failure      401   {object}  models.AuthErrorResponse
-// @Security BearerAuth
+// @Failure      500   {object}  models.ServerErrorResponse
 // @Router       /auth/login [post]
 func (base *Controller) Login(c *gin.Context) {
 	var input models.LoginRequest

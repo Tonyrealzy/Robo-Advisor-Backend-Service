@@ -11,14 +11,8 @@ import (
 	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/utils"
 )
 
-func ResetPassword(db *gorm.DB, email string) (string, error) {
-	var user *models.User
+func SendLinkToUser(db *gorm.DB, existingUser *models.User, email string) (string, error) {
 	var password *models.PasswordReset
-
-	existingUser, err := user.GetUserByEmail(db, email)
-	if err != nil {
-		return "", fmt.Errorf("user not found: %v", err)
-	}
 
 	tokenString := fmt.Sprintf("%s-%s-%s", email, existingUser.ID, time.Now().String())
 	hashedToken, err := utils.HashPassword(tokenString)

@@ -1,8 +1,8 @@
 package models
 
 import (
-	"log"
 	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/config"
+	"log"
 	"time"
 
 	"gorm.io/gorm"
@@ -15,7 +15,7 @@ type User struct {
 	Password  string `gorm:"not null"`
 	FirstName string `gorm:"not null"`
 	LastName  string `gorm:"not null"`
-	IsActive  bool   `gorm:"default:true"`
+	IsActive  bool   `gorm:"default:false"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
 	DeletedAt gorm.DeletedAt `gorm:"index"`

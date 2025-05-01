@@ -19,6 +19,7 @@ import (
 // @Success      200   {object}  models.AIResponse
 // @Failure      400   {object}  models.ErrorResponse
 // @Failure      401   {object}  models.AuthErrorResponse
+// @Failure      500   {object}  models.ServerErrorResponse
 // @Security BearerAuth
 // @Router       /ai/fetch-response/today  [get]
 func (base *Controller) GetPreviousAiResponseForToday(c *gin.Context) {

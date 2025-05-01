@@ -8,6 +8,7 @@ import (
 
 func SetupAuthRoutes(router *gin.RouterGroup, controller auth.Controller) {
 	router.POST("/signup", controller.Signup)
+	router.POST("/signup/confirm", controller.ConfirmSignup)
 	router.POST("/login", controller.Login)
 	router.POST("/logout", controller.Logout)
 	router.POST("/password-reset", controller.PasswordReset)

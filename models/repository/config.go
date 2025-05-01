@@ -6,7 +6,6 @@ type Config struct {
 	PostgresUser     string
 	PostgresPassword string
 	PostgresDB       string
-	PostgresTimezone string
 	PostgresSslMode  string
 	JwtSecret        string
 	JwtExpiration    string

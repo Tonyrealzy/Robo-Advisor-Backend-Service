@@ -22,6 +22,7 @@ type Controller struct {
 // @Success      200   {object}  models.AIResponse
 // @Failure      400   {object}  models.ErrorResponse
 // @Failure      401   {object}  models.AuthErrorResponse
+// @Failure      500   {object}  models.ServerErrorResponse
 // @Security BearerAuth
 // @Router       /ai/send-request [post]
 func (base *Controller) GetAiResponse(c *gin.Context) {

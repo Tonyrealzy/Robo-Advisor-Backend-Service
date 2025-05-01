@@ -41,5 +41,5 @@ func ValidateResetToken(db *gorm.DB, token, password string) (string, error) {
 		return "", fmt.Errorf("failed to delete reset token: %v", deleteErr)
 	}
 
-	return fmt.Sprint("Password reset successful"), nil
+	return "Password reset successful", nil
 }

@@ -16,6 +16,7 @@ import (
 // @Param        body  body      models.PasswordResetRequest  true  "Email for password reset"
 // @Success      200   {object}  models.PasswordResetResponse
 // @Failure      400   {object}  models.ErrorResponse
+// @Failure      500   {object}  models.ServerErrorResponse
 // @Router       /auth/password-reset [post]
 func (base *Controller) PasswordReset(c *gin.Context) {
 	var input models.PasswordResetRequest

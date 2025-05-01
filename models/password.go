@@ -1,8 +1,8 @@
 package models
 
 import (
-	"log"
 	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/config"
+	"log"
 	"time"
 
 	"gorm.io/gorm"
@@ -24,6 +24,11 @@ type PasswordResetRequest struct {
 type PasswordChangeRequest struct {
 	Token       string `json:"token" binding:"required"`
 	NewPassword string `json:"new_password" binding:"required,min=8"`
+}
+
+type ConfirmSignupRequest struct {
+	Token string `json:"token" binding:"required"`
+	Email string `json:"email" binding:"required"`
 }
 
 func (p *PasswordReset) CreatePasswordReset(db *gorm.DB, passReset *PasswordReset) error {

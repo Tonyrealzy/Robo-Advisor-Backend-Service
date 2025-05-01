@@ -9,5 +9,5 @@ import (
 func SetupAIRoutes(router *gin.RouterGroup, controller ai.Controller) {
 	router.POST("/send-request", controller.GetAiResponse)
 	router.GET("/fetch-response/today", controller.GetPreviousAiResponseForToday)
-	router.GET("/fetch-response/by-days", controller.GetPreviousAiResponseByNoOfDays)
+	router.GET("/fetch-response/days", controller.GetPreviousAiResponseByNoOfDays)
 }

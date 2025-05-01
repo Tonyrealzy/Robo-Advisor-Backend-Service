@@ -1,9 +1,9 @@
 package auth
 
 import (
-	"net/http"
 	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/models"
 	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/services/auth"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
@@ -16,6 +16,7 @@ import (
 // @Param        body  body      models.PasswordChangeRequest  true  "Token and new password for reset"
 // @Success      200   {object}  models.PasswordChangeResponse
 // @Failure      400   {object}  models.ErrorResponse
+// @Failure      500   {object}  models.ServerErrorResponse
 // @Router       /auth/change-password [post]
 func (base *Controller) PasswordChange(c *gin.Context) {
 	var input models.PasswordChangeRequest
@@ -26,11 +27,11 @@ func (base *Controller) PasswordChange(c *gin.Context) {
 		return
 	}
 
-	_, resetErr := auth.ValidateResetToken(base.Db, input.Token, input.NewPassword)
+	resetMsg, resetErr := auth.ValidateResetToken(base.Db, input.Token, input.NewPassword)
 	if resetErr != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"status": "error", "error": resetErr.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"status": "success", "message": "Password changed successfully"})
+	c.JSON(http.StatusOK, gin.H{"status": "success", "message": resetMsg})
 }

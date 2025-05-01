@@ -28,7 +28,6 @@ func LoadEnv() (repository.Config, error) {
 		PostgresUser:     os.Getenv("POSTGRES_USER"),
 		PostgresPassword: os.Getenv("POSTGRES_PASSWORD"),
 		PostgresDB:       os.Getenv("POSTGRES_DB"),
-		PostgresTimezone: os.Getenv("POSTGRES_TIMEZONE"),
 		PostgresSslMode:  os.Getenv("POSTGRES_SSLMODE"),
 		JwtSecret:        os.Getenv("JWT_SECRET"),
 		JwtExpiration:    os.Getenv("JWT_EXPIRATION"),
