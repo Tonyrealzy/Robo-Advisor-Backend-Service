@@ -38,13 +38,13 @@ func ValidateResetToken(db *gorm.DB, token, password string) (string, error) {
 	updateErr := config.UpdateModel(db, &user)
 	if updateErr != nil {
 		logger.Log.Printf("failed to update password: %v", updateErr)
-		return "", fmt.Errorf("failed to update password: %v", updateErr)
+		return "", fmt.Errorf("failed to update password")
 	}
 
-	deleteErr := config.DeleteByID(db, &reset, reset.ID)
+	deleteErr := config.DeleteSpecificRecord(db, reset, "id = ?", reset.ID)
 	if deleteErr != nil {
 		logger.Log.Printf("failed to delete reset token: %v", deleteErr)
-		return "", fmt.Errorf("failed to delete reset token: %v", deleteErr)
+		return "", fmt.Errorf("failed to delete reset token")
 	}
 
 	return "Password reset successful", nil

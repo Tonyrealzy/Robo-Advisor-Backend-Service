@@ -61,12 +61,12 @@ func FindOneByField(db *gorm.DB, model interface{}, field string, value interfac
 }
 
 func FindByTwoFields(db *gorm.DB, model interface{}, field1 string, value1 interface{}, field2 string, value2 interface{}) error {
-	result := db.Where(fmt.Sprintf("%s = ? AND %s = ?", field1, field2), value1, value2).First(model)
+	result := db.Where(fmt.Sprintf("%s AND %s", field1, field2), value1, value2).First(model)
 	return result.Error
 }
 
 func FindByThreeFields(db *gorm.DB, model interface{}, field1 string, value1 interface{}, field2 string, value2 interface{}, field3 string, value3 interface{}) error {
-	result := db.Where(fmt.Sprintf("%s = ? AND %s = ? AND %s = ?", field1, field2, field3), value1, value2, value3).First(model)
+	result := db.Where(fmt.Sprintf("%s AND %s AND %s", field1, field2, field3), value1, value2, value3).First(model)
 	return result.Error
 }
 

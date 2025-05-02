@@ -64,12 +64,13 @@ func ResendLinkToUser(db *gorm.DB, email string) (string, error) {
 			return "", err
 		}
 		reset.Token = hashedToken
+		reset.ExpiresAt = time.Now().UTC().Add(time.Minute * 30)
 		updateErr := password.UpdatePasswordReset(db, reset)
 		if updateErr != nil {
 			logger.Log.Printf("error updating token string: %v", updateErr)
 			return "", updateErr
 		}
 	}
-	
+
 	return reset.Token, nil
 }
