@@ -24,20 +24,6 @@ import (
 func (base *Controller) Logout(c *gin.Context) {
 	var input models.LogoutRequest
 
-	userRaw, exists := c.Get("user")
-	if !exists {
-		logger.Log.Println("Invalid or expired token")
-		c.JSON(http.StatusUnauthorized, gin.H{"status": "error", "error": "Invalid or expired token"})
-		return
-	}
-
-	_, ok := userRaw.(*models.User)
-	if !ok {
-		logger.Log.Println("Failed to fetch user details")
-		c.JSON(http.StatusInternalServerError, gin.H{"status": "error", "error": "Failed to fetch user details"})
-		return
-	}
-
 	err := c.BindJSON(&input)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"status": "error", "error": err.Error()})
