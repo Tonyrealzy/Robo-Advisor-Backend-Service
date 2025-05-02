@@ -29,17 +29,34 @@ func ResetPassword(db *gorm.DB, email string) (string, error) {
 		return "", err
 	}
 
-	passwordReset := models.PasswordReset{
-		ID:        utils.GenerateUUID(),
-		Email:     email,
-		UserID:    existingUser.ID,
-		Token:     hashedToken,
-		ExpiresAt: time.Now().UTC().Add(time.Minute * 30), // Token expires in 1/2 hour
+	resetGotten, resetErr := password.GetPasswordResetByEmail(db, email)
+	if resetErr != nil {
+		logger.Log.Printf("Error fetching password reset model by email: %v", resetErr)
+		return "", resetErr
 	}
-	createErr := password.CreatePasswordReset(db, &passwordReset)
-	if createErr != nil {
-		logger.Log.Printf("Error resetting password: %v", createErr)
-		return "", createErr
+
+	if resetGotten.Email == "" {
+		passwordReset := models.PasswordReset{
+			ID:        utils.GenerateUUID(),
+			Email:     email,
+			UserID:    existingUser.ID,
+			Token:     hashedToken,
+			ExpiresAt: time.Now().UTC().Add(time.Minute * 30), // Token expires in 1/2 hour
+		}
+		createErr := password.CreatePasswordReset(db, &passwordReset)
+		if createErr != nil {
+			logger.Log.Printf("Error resetting password: %v", createErr)
+			return "", createErr
+		}
+
+	} else {
+		resetGotten.Token = hashedToken
+		resetGotten.ExpiresAt = time.Now().UTC().Add(time.Minute * 30)
+		updateErr := password.UpdatePasswordReset(db, resetGotten)
+		if updateErr != nil {
+			logger.Log.Printf("error updating token string: %v", updateErr)
+			return "", updateErr
+		}
 	}
 
 	// You would send a link with the reset token to the user's email

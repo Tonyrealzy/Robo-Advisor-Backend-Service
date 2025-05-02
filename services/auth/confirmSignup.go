@@ -43,5 +43,5 @@ func ConfirmSignup(db *gorm.DB, email, token string) (string, error) {
 		return "", fmt.Errorf("invalid reset token")
 	}
 
-	return fmt.Sprintf("User status updated successfully!"), nil
+	return "User status updated successfully!", nil
 }

@@ -80,11 +80,16 @@ func (p *PasswordReset) GetPasswordResetByID(db *gorm.DB, id string) (*PasswordR
 }
 
 func (p *PasswordReset) UpdatePasswordReset(db *gorm.DB, reset *PasswordReset) error {
-	err := config.UpdateOneFieldByID(db, reset, reset.ID, "token", reset.Token)
+	err := config.UpdateModel(db, &reset)
 	if err != nil {
 		logger.Log.Printf("Error updating token in password reset model: %v", err)
 		return err
 	}
+	// err := config.UpdateOneFieldByID(db, reset, reset.ID, "token", reset.Token)
+	// if err != nil {
+	// 	logger.Log.Printf("Error updating token in password reset model: %v", err)
+	// 	return err
+	// }
 
 	return nil
 }
