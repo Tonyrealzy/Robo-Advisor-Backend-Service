@@ -35,8 +35,7 @@ func LoadEnv() (repository.Config, error) {
 		AiService:        os.Getenv("AI_SERVICE"),
 		FrontendHost:     os.Getenv("FRONTEND_HOST"),
 		Port:             os.Getenv("PORT"),
-		EmailAddress:     os.Getenv("EMAIL_ADDRESS"),
-		EmailPassword:    os.Getenv("EMAIL_PASSWORD"),
+		BrevoKey:         os.Getenv("BREVO_KEY"),
 		AppEnv:           os.Getenv("APP_ENV"),
 	}
 	logger.Log.Println("Loaded .env file successfully")

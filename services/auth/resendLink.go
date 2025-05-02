@@ -9,8 +9,8 @@ import (
 
 	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/internal/logger"
 	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/models"
+	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/services"
 
-	// "github.com/Tonyrealzy/Robo-Advisor-Backend-Service/services"
 	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/utils"
 )
 
@@ -37,19 +37,25 @@ func SendLinkToUser(db *gorm.DB, existingUser *models.User) (string, error) {
 		return "", createErr
 	}
 
-	// You would send a link with the reset token to the user's email
-	// emailErr := services.SendEmail(db, []string{email}, hashedToken)
-	// if emailErr != nil {
-	// 	return "", emailErr
-	// }
-
+	// Send a link with the reset token to the user's email
+	emailErr := services.SendResetEmail(existingUser.Email, existingUser.Name, hashedToken)
+	if emailErr != nil {
+		return "", emailErr
+	}
+	
 	return hashedToken, nil
 }
 
 func ResendLinkToUser(db *gorm.DB, email string) (string, error) {
 	var password models.PasswordReset
+	var user models.User
 
 	reset, err := password.GetPasswordResetByEmail(db, email)
+	if err != nil {
+		logger.Log.Printf("error fetching password reset model: %v", err)
+		return "", errors.New("error fetching password reset model")
+	}
+	existingUser, err := user.GetUserByEmail(db, email)
 	if err != nil {
 		logger.Log.Printf("error fetching password reset model: %v", err)
 		return "", errors.New("error fetching password reset model")
@@ -70,6 +76,12 @@ func ResendLinkToUser(db *gorm.DB, email string) (string, error) {
 			logger.Log.Printf("error updating token string: %v", updateErr)
 			return "", updateErr
 		}
+	}
+	
+	// Send a link with the reset token to the user's email
+	emailErr := services.SendResetEmail(existingUser.Email, existingUser.Name, reset.Token)
+	if emailErr != nil {
+		return "", emailErr
 	}
 
 	return reset.Token, nil

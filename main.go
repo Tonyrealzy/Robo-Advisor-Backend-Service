@@ -15,6 +15,7 @@ import (
 	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/middleware"
 	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/models"
 	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/routes"
+	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/services"
 )
 
 func main() {
@@ -24,6 +25,11 @@ func main() {
 	_, err := config.LoadEnv()
 	if err != nil {
 		logger.Log.Errorf("Failed to load env credentials: %v", err)
+	}
+
+	initErr := services.InitEmailService()
+	if initErr != nil {
+		logger.Log.Fatalf("Failed to initialise email service: %v", initErr)
 	}
 
 	db := config.ConnectToDatabase()
