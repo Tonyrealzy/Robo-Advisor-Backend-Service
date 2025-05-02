@@ -32,8 +32,6 @@ func CallAIService(db *gorm.DB, req models.AIServiceRequest, user models.User) (
 		return nil, fmt.Errorf("failed to parse JSON response: %v", err)
 	}
 
-	logger.Log.Printf("Parsed Response: %v", parsedResponse)
-
 	if parsedResponse.Status == "success" {
 		queryJSON, err := json.Marshal(req)
 		if err != nil {
@@ -56,8 +54,6 @@ func CallAIService(db *gorm.DB, req models.AIServiceRequest, user models.User) (
 			CreatedAt: time.Now().UTC(),
 			UpdatedAt: time.Now().UTC(),
 		}
-
-		logger.Log.Printf("AI Service chat response logged: %v", aiServiceResponse)
 
 		createErr := config.CreateOneRecord(db, &aiServiceResponse)
 		if createErr != nil {
