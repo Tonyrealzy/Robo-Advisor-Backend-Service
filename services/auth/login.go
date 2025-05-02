@@ -46,12 +46,12 @@ func Login(db *gorm.DB, email, password string) (string, error) {
 	}
 
 	sessionFetched, sessionErr := session.GetUserSessionByID(db, existingUser.ID)
-	if sessionErr != nil {
+	if sessionErr != nil && !errors.Is(sessionErr, gorm.ErrRecordNotFound) {
 		logger.Log.Printf("Error retrieving user session: %v", sessionErr)
 		return "", sessionErr
 	}
 
-	if sessionFetched.Token == "" {
+	if sessionFetched == nil || sessionFetched.Token == "" {
 		userToken := models.UserSession{
 			ID:        utils.GenerateUUID(),
 			UserID:    existingUser.ID,
@@ -67,7 +67,7 @@ func Login(db *gorm.DB, email, password string) (string, error) {
 	} else {
 		sessionFetched.Token = token
 		sessionFetched.ExpiresAt = time.Now().UTC().Add(time.Minute * 30)
-		
+
 		err := session.UpdateUserSession(db, sessionFetched)
 		if err != nil {
 			logger.Log.Printf("Error updating user session: %v", err)
