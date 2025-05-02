@@ -10,8 +10,8 @@ import (
 )
 
 func Logout(db *gorm.DB, email string) error {
-	var user *models.User
-	var session *models.UserSession
+	var user models.User
+	var session models.UserSession
 
 	loggedInUser, err := user.GetUserByEmail(db, email)
 	if err != nil {

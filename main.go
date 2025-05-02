@@ -31,11 +31,13 @@ func main() {
 		logger.Log.Println("Ready to go!")
 	}
 
-	dbErr := db.AutoMigrate(&models.User{}, &models.PasswordReset{}, &models.UserSession{}, &models.AIPersistedResponse{})
-	if dbErr != nil {
-		logger.Log.Fatalf("Migration failed: %v", dbErr)
-	} else {
-		logger.Log.Println("Database auto-migrated successfully!")
+	if config.AppConfig.AppEnv == "development" {
+		dbErr := db.AutoMigrate(&models.User{}, &models.PasswordReset{}, &models.UserSession{}, &models.AIPersistedResponse{})
+		if dbErr != nil {
+			logger.Log.Fatalf("Migration failed: %v", dbErr)
+		} else {
+			logger.Log.Println("Database auto-migrated successfully!")
+		}
 	}
 
 	router := middleware.SetupRouter()

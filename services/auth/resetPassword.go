@@ -13,8 +13,8 @@ import (
 )
 
 func ResetPassword(db *gorm.DB, email string) (string, error) {
-	var user *models.User
-	var password *models.PasswordReset
+	var user models.User
+	var password models.PasswordReset
 
 	existingUser, err := user.GetUserByEmail(db, email)
 	if err != nil {
@@ -22,18 +22,19 @@ func ResetPassword(db *gorm.DB, email string) (string, error) {
 		return "", fmt.Errorf("user not found: %v", err)
 	}
 
-	tokenString := fmt.Sprintf("%s-%s-%s", email, existingUser.ID, time.Now().String())
+	tokenString := fmt.Sprintf("%s-%s-%s", email, existingUser.ID, time.Now().UTC().String())
 	hashedToken, err := utils.HashPassword(tokenString)
 	if err != nil {
 		logger.Log.Printf("Error hashing password: %v", err)
 		return "", err
 	}
-	
+
 	passwordReset := models.PasswordReset{
 		ID:        utils.GenerateUUID(),
+		Email:     email,
 		UserID:    existingUser.ID,
 		Token:     hashedToken,
-		ExpiresAt: time.Now().Add(time.Minute * 30), // Token expires in 1/2 hour
+		ExpiresAt: time.Now().UTC().Add(time.Minute * 30), // Token expires in 1/2 hour
 	}
 	createErr := password.CreatePasswordReset(db, &passwordReset)
 	if createErr != nil {

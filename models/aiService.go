@@ -43,7 +43,7 @@ type AIPersistedResponse struct {
 func (a *AIPersistedResponse) GetAllAIResponses(db *gorm.DB, userID string) (*AIPersistedResponse, error) {
 	var interaction AIPersistedResponse
 
-	err := config.FindByID(db, interaction, userID)
+	err := config.FindByID(db, &interaction, userID)
 	if err != nil {
 		logger.Log.Printf("Error getting all AI responses: %v", err)
 		return nil, err
@@ -53,12 +53,12 @@ func (a *AIPersistedResponse) GetAllAIResponses(db *gorm.DB, userID string) (*AI
 }
 
 func (a *AIPersistedResponse) GetTodayResponse(db *gorm.DB, userID string, pagination config.Pagination) ([]AIPersistedResponse, error) {
-	today := time.Now()
+	today := time.Now().UTC()
 	start := time.Date(today.Year(), today.Month(), today.Day(), 0, 0, 0, 0, today.Location())
 	end := start.Add(24 * time.Hour)
 
 	var results []AIPersistedResponse
-	err := config.FindByThreeFieldsPaginated(db, results, "user_id", userID,
+	err := config.FindByThreeFieldsPaginated(db, &results, "user_id = ?", userID,
 		"created_at >= ?", start,
 		"created_at <= ?", end,
 		pagination)
@@ -71,7 +71,7 @@ func (a *AIPersistedResponse) GetTodayResponse(db *gorm.DB, userID string, pagin
 }
 
 func (a *AIPersistedResponse) GetResponseByNoOfDays(db *gorm.DB, userID string, days int, pagination config.Pagination) ([]AIPersistedResponse, error) {
-	now := time.Now()
+	now := time.Now().UTC()
 	start := now.AddDate(0, 0, -days)
 
 	var results []AIPersistedResponse

@@ -37,6 +37,7 @@ func LoadEnv() (repository.Config, error) {
 		Port:             os.Getenv("PORT"),
 		EmailAddress:     os.Getenv("EMAIL_ADDRESS"),
 		EmailPassword:    os.Getenv("EMAIL_PASSWORD"),
+		AppEnv:           os.Getenv("APP_ENV"),
 	}
 	logger.Log.Println("Loaded .env file successfully")
 

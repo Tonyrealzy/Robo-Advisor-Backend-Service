@@ -33,7 +33,7 @@ func FetchAIResponsesForToday(db *gorm.DB, userID string, pagination config.Pagi
 }
 
 func FetchAIResponsesByNoOfDays(db *gorm.DB, userID string, number int, pagination config.Pagination) ([]models.AIServiceResponse, error) {
-	var response *models.AIPersistedResponse
+	var response models.AIPersistedResponse
 	
 	persistedResponse, err := response.GetResponseByNoOfDays(db, userID, number, pagination)
 	if err != nil {

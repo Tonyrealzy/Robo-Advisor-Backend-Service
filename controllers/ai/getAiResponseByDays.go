@@ -33,7 +33,7 @@ func (base *Controller) GetPreviousAiResponseByNoOfDays(c *gin.Context) {
 		return
 	}
 
-	user, ok := userRaw.(models.User)
+	user, ok := userRaw.(*models.User)
 	if !ok {
 		logger.Log.Println("Failed to fetch user details")
 		c.JSON(http.StatusInternalServerError, gin.H{"status": "error", "error": "Failed to fetch user details"})

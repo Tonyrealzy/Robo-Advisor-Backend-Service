@@ -397,6 +397,52 @@ const docTemplate = `{
                 }
             }
         },
+        "/auth/resend-link": {
+            "post": {
+                "description": "Resend verification link to the email used in signup/login",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Resend verification link",
+                "parameters": [
+                    {
+                        "description": "email",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.PasswordResetRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResendLinkResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ServerErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/auth/signup": {
             "post": {
                 "description": "Create a new user account",
@@ -693,6 +739,19 @@ const docTemplate = `{
                 "message": {
                     "type": "string",
                     "example": "Password reset successful"
+                },
+                "status": {
+                    "type": "string",
+                    "example": "success"
+                }
+            }
+        },
+        "models.ResendLinkResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "Link sent successfully"
                 },
                 "status": {
                     "type": "string",

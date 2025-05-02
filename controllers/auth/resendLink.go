@@ -10,18 +10,18 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// @Summary      Confirm email
-// @Description  Use hashed token to confirm email used in signup
+// @Summary      Resend verification link
+// @Description  Resend verification link to the email used in signup/login
 // @Tags         Auth
 // @Accept       json
 // @Produce      json
-// @Param        body  body      models.ConfirmSignupRequest  true  "Token and email for confirmation"
-// @Success      200   {object}  models.ConfirmSignupResponse
+// @Param        body  body      models.PasswordResetRequest  true  "email"
+// @Success      200   {object}  models.ResendLinkResponse
 // @Failure      400   {object}  models.ErrorResponse
 // @Failure      500   {object}  models.ServerErrorResponse
-// @Router       /auth/signup/confirm [post]
-func (base *Controller) ConfirmSignup(c *gin.Context) {
-	var input models.ConfirmSignupRequest
+// @Router       /auth/resend-link [post]
+func (base *Controller) ResendLink(c *gin.Context) {
+	var input models.PasswordResetRequest
 
 	err := c.BindJSON(&input)
 	if err != nil {
@@ -30,9 +30,9 @@ func (base *Controller) ConfirmSignup(c *gin.Context) {
 		return
 	}
 
-	message, messageErr := auth.ConfirmSignup(base.Db, input.Email, input.Token)
+	message, messageErr := auth.ResendLinkToUser(base.Db, input.Email)
 	if messageErr != nil {
-		logger.Log.Printf("ConfirmSignup error: %v", messageErr.Error())
+		logger.Log.Printf("ResendLinkToUser error: %v", messageErr.Error())
 		c.JSON(http.StatusBadRequest, gin.H{"status": "error", "error": messageErr.Error()})
 		return
 	}

@@ -34,7 +34,7 @@ func (base *Controller) Signup(c *gin.Context) {
 		return
 	}
 
-	linkMsg, linkErr := auth.SendLinkToUser(base.Db, signupUser, input.Email)
+	linkMsg, linkErr := auth.SendLinkToUser(base.Db, signupUser)
 	if linkErr != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"status": "error", "error": linkErr.Error()})
 		return

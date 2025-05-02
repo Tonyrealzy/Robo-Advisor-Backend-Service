@@ -35,6 +35,11 @@ type PasswordResetResponse struct {
 	Message string `json:"message" example:"Password reset successful"`
 }
 
+type ResendLinkResponse struct {
+	Status  string `json:"status" example:"success"`
+	Message string `json:"message" example:"Link sent successfully"`
+}
+
 type ConfirmSignupResponse struct {
 	Status  string `json:"status" example:"success"`
 	Message string `json:"message" example:"User status updated successfully"`

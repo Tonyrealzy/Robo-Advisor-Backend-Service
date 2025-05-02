@@ -36,27 +36,27 @@ func (base *Controller) GetAiResponse(c *gin.Context) {
 		c.JSON(http.StatusUnauthorized, gin.H{"status": "error", "error": "Invalid or expired token"})
 		return
 	}
-	
-	user, ok := userRaw.(models.User)
+
+	user, ok := userRaw.(*models.User)
 	if !ok {
 		logger.Log.Println("Failed to fetch user details")
 		c.JSON(http.StatusInternalServerError, gin.H{"status": "error", "error": "Failed to fetch user details"})
 		return
 	}
-	
+
 	err := c.BindJSON(&input)
 	if err != nil {
 		logger.Log.Println("Failed to bind JSON input")
 		c.JSON(http.StatusBadRequest, gin.H{"status": "error", "error": err.Error()})
 		return
 	}
-	
-	resp, respErr := services.CallAIService(base.Db, input, user)
+
+	resp, respErr := services.CallAIService(base.Db, input, *user)
 	if respErr != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"status": "error", "error": respErr.Error()})
 		return
 	}
-	
+
 	logger.Log.Println("Response successful!")
 	c.JSON(http.StatusOK, resp)
 }

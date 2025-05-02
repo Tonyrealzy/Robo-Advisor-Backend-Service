@@ -142,6 +142,15 @@ definitions:
         example: success
         type: string
     type: object
+  models.ResendLinkResponse:
+    properties:
+      message:
+        example: Link sent successfully
+        type: string
+      status:
+        example: success
+        type: string
+    type: object
   models.ServerErrorResponse:
     properties:
       error:
@@ -428,6 +437,36 @@ paths:
           schema:
             $ref: '#/definitions/models.ServerErrorResponse'
       summary: Request password reset
+      tags:
+      - Auth
+  /auth/resend-link:
+    post:
+      consumes:
+      - application/json
+      description: Resend verification link to the email used in signup/login
+      parameters:
+      - description: email
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.PasswordResetRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ResendLinkResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ServerErrorResponse'
+      summary: Resend verification link
       tags:
       - Auth
   /auth/signup:
