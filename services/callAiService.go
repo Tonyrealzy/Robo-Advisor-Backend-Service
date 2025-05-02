@@ -18,8 +18,6 @@ func CallAIService(db *gorm.DB, req models.AIServiceRequest, user models.User) (
 	httpClient := utils.NewHTTPClient(180 * time.Second)
 	aiServiceURL := fmt.Sprintf("%s/api/gemini_request", config.AppConfig.AiService)
 
-	logger.Log.Printf("AI Service URL: %v", aiServiceURL)
-
 	resp, body, err := httpClient.PostRequest(aiServiceURL, req)
 	if err != nil {
 		logger.Log.Printf("failed to call ai-service: %v", err)
@@ -33,6 +31,8 @@ func CallAIService(db *gorm.DB, req models.AIServiceRequest, user models.User) (
 		logger.Log.Printf("failed to parse JSON response: %v", err)
 		return nil, fmt.Errorf("failed to parse JSON response: %v", err)
 	}
+
+	logger.Log.Printf("Parsed Response: %v", parsedResponse)
 
 	if parsedResponse.Status == "success" {
 		queryJSON, err := json.Marshal(req)
@@ -59,7 +59,7 @@ func CallAIService(db *gorm.DB, req models.AIServiceRequest, user models.User) (
 
 		logger.Log.Printf("AI Service chat response logged: %v", aiServiceResponse)
 
-		createErr := config.CreateOneRecord(db, aiServiceResponse)
+		createErr := config.CreateOneRecord(db, &aiServiceResponse)
 		if createErr != nil {
 			logger.Log.Printf("error creating AI Service chat entry: %v", createErr)
 			return nil, createErr
