@@ -12,7 +12,7 @@ type Config struct {
 	AiService        string
 	FrontendHost     string
 	Port             string
-	EmailAddress     string
-	EmailPassword    string
+	BrevoKey         string
+	MailSender         string
 	AppEnv           string
 }
