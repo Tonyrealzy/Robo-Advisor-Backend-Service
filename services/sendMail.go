@@ -31,7 +31,7 @@ func InitEmailService() error {
 }
 
 func SendResetEmail(userEmail, userName, token string) error {
-	sender := sib.SendSmtpEmailSender{Name: "Support", Email: "tonyrealzy@gmail.com"}
+	sender := sib.SendSmtpEmailSender{Name: "Advisor Support", Email: config.AppConfig.MailSender}
 	to := []sib.SendSmtpEmailTo{{Email: userEmail, Name: userName}}
 
 	resetLink := fmt.Sprintf("%s/reset-password?token=%s", config.AppConfig.FrontendHost, token)

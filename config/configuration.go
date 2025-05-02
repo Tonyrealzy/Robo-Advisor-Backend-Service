@@ -37,6 +37,7 @@ func LoadEnv() (repository.Config, error) {
 		Port:             os.Getenv("PORT"),
 		BrevoKey:         os.Getenv("BREVO_KEY"),
 		AppEnv:           os.Getenv("APP_ENV"),
+		MailSender:       os.Getenv("MAIL_SENDER"),
 	}
 	logger.Log.Println("Loaded .env file successfully")
 
