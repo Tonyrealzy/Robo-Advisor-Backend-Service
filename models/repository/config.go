@@ -6,13 +6,13 @@ type Config struct {
 	PostgresUser     string
 	PostgresPassword string
 	PostgresDB       string
-	PostgresTimezone string
 	PostgresSslMode  string
 	JwtSecret        string
 	JwtExpiration    string
-	AiService          string
+	AiService        string
 	FrontendHost     string
 	Port             string
 	EmailAddress     string
 	EmailPassword    string
+	AppEnv           string
 }

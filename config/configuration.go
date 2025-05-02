@@ -1,9 +1,10 @@
 package config
 
 import (
-	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/models/repository"
-	"log"
 	"os"
+
+	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/internal/logger"
+	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/models/repository"
 
 	"github.com/joho/godotenv"
 )
@@ -15,11 +16,11 @@ func LoadEnv() (repository.Config, error) {
 	if loadErr == nil {
 		err := godotenv.Load()
 		if err != nil {
-			log.Printf("Error loading .env file: %v", loadErr)
+			logger.Log.Printf("Error loading .env file: %v", loadErr)
 			return AppConfig, err
 		}
 	} else {
-		log.Println(".env not found. Using platform environment variables.")
+		logger.Log.Println(".env not found. Using platform environment variables.")
 	}
 
 	AppConfig = repository.Config{
@@ -28,7 +29,6 @@ func LoadEnv() (repository.Config, error) {
 		PostgresUser:     os.Getenv("POSTGRES_USER"),
 		PostgresPassword: os.Getenv("POSTGRES_PASSWORD"),
 		PostgresDB:       os.Getenv("POSTGRES_DB"),
-		PostgresTimezone: os.Getenv("POSTGRES_TIMEZONE"),
 		PostgresSslMode:  os.Getenv("POSTGRES_SSLMODE"),
 		JwtSecret:        os.Getenv("JWT_SECRET"),
 		JwtExpiration:    os.Getenv("JWT_EXPIRATION"),
@@ -37,8 +37,9 @@ func LoadEnv() (repository.Config, error) {
 		Port:             os.Getenv("PORT"),
 		EmailAddress:     os.Getenv("EMAIL_ADDRESS"),
 		EmailPassword:    os.Getenv("EMAIL_PASSWORD"),
+		AppEnv:           os.Getenv("APP_ENV"),
 	}
-	log.Println("Loaded .env file successfully")
+	logger.Log.Println("Loaded .env file successfully")
 
 	return AppConfig, nil
 }

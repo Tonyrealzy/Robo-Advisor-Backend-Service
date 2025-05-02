@@ -3,6 +3,7 @@ package auth
 import (
 	"net/http"
 	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/models"
+	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/internal/logger"
 	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/services/auth"
 
 	"github.com/gin-gonic/gin"
@@ -22,7 +23,7 @@ type Controller struct {
 // @Success      200   {object}  models.LoginResponse
 // @Failure      400   {object}  models.ErrorResponse
 // @Failure      401   {object}  models.AuthErrorResponse
-// @Security BearerAuth
+// @Failure      500   {object}  models.ServerErrorResponse
 // @Router       /auth/login [post]
 func (base *Controller) Login(c *gin.Context) {
 	var input models.LoginRequest
@@ -39,5 +40,6 @@ func (base *Controller) Login(c *gin.Context) {
 		return
 	}
 
+	logger.Log.Println("Response successful!")
 	c.JSON(http.StatusOK, gin.H{"status": "success", "message": "Login successful", "token": token})
 }

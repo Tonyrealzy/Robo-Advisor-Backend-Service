@@ -3,6 +3,7 @@ package ai
 import (
 	"net/http"
 	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/config"
+	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/internal/logger"
 	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/models"
 	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/services"
 
@@ -19,17 +20,20 @@ import (
 // @Success      200   {object}  models.AIResponse
 // @Failure      400   {object}  models.ErrorResponse
 // @Failure      401   {object}  models.AuthErrorResponse
+// @Failure      500   {object}  models.ServerErrorResponse
 // @Security BearerAuth
 // @Router       /ai/fetch-response/today  [get]
 func (base *Controller) GetPreviousAiResponseForToday(c *gin.Context) {
 	userRaw, exists := c.Get("user")
 	if !exists {
+		logger.Log.Println("Invalid or expired token")
 		c.JSON(http.StatusUnauthorized, gin.H{"status": "error", "error": "Invalid or expired token"})
 		return
 	}
 
-	user, ok := userRaw.(models.User)
+	user, ok := userRaw.(*models.User)
 	if !ok {
+		logger.Log.Println("Failed to fetch user details")
 		c.JSON(http.StatusInternalServerError, gin.H{"status": "error", "error": "Failed to fetch user details"})
 		return
 	}
@@ -41,6 +45,7 @@ func (base *Controller) GetPreviousAiResponseForToday(c *gin.Context) {
 		return
 	}
 
+	logger.Log.Println("Response successful!")
 	c.JSON(http.StatusOK, gin.H{
 		"status": "success",
 		"data":   responses,

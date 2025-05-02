@@ -71,7 +71,7 @@ func FindByThreeFields(db *gorm.DB, model interface{}, field1 string, value1 int
 }
 
 func FindByID(db *gorm.DB, model interface{}, id interface{}) error {
-	result := db.First(model, id)
+	result := db.Where("id = ?", id).First(model)
 	return result.Error
 }
 
@@ -100,7 +100,7 @@ func FindByTwoFieldsPaginated(db *gorm.DB, model interface{}, field1 string, val
 func FindByThreeFieldsPaginated(db *gorm.DB, model interface{}, field1 string, value1 interface{}, field2 string, value2 interface{}, field3 string, value3 interface{}, pagination Pagination) error {
 	offset := (pagination.Page - 1) * pagination.Limit
 
-	result := db.Where(fmt.Sprintf("%s = ? AND %s = ? AND %s = ?", field1, field2, field3), value1, value2, value3).
+	result := db.Where(fmt.Sprintf("%s AND %s AND %s", field1, field2, field3), value1, value2, value3).
 		Limit(pagination.Limit).
 		Offset(offset).
 		Find(model)

@@ -3,10 +3,12 @@ package middleware
 import (
 	"errors"
 	"fmt"
-	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/config"
-	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/models"
 	"strconv"
 	"time"
+
+	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/config"
+	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/internal/logger"
+	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/models"
 
 	"github.com/golang-jwt/jwt/v5"
 	"gorm.io/gorm"
@@ -15,6 +17,7 @@ import (
 func CreateToken(userID string, email string) (string, error) {
 	expirationMinutes, err := strconv.Atoi(config.AppConfig.JwtExpiration)
 	if err != nil {
+		logger.Log.Printf("JWT Token creation error: %v. Invalid JWT expiration value", err)
 		return "", fmt.Errorf("invalid JWT expiration value: %v", err)
 	}
 
@@ -24,8 +27,8 @@ func CreateToken(userID string, email string) (string, error) {
 		UserID: userID,
 		Email:  email,
 		RegisteredClaims: jwt.RegisteredClaims{
-			ExpiresAt: jwt.NewNumericDate(time.Now().Add(expirationDuration)),
-			IssuedAt:  jwt.NewNumericDate(time.Now()),
+			ExpiresAt: jwt.NewNumericDate(time.Now().UTC().Add(expirationDuration)),
+			IssuedAt:  jwt.NewNumericDate(time.Now().UTC()),
 			Issuer:    "roboadvisor-auth",
 		},
 	}
@@ -37,12 +40,19 @@ func CreateToken(userID string, email string) (string, error) {
 }
 
 func VerifyToken(db *gorm.DB, tokenStr string) (*models.JWTClaims, error) {
-	token, err := jwt.ParseWithClaims(tokenStr, &models.JWTClaims{}, func(token *jwt.Token) (interface{}, error) {
+	parser := jwt.NewParser(jwt.WithoutClaimsValidation())
+
+	token, err := parser.ParseWithClaims(tokenStr, &models.JWTClaims{}, func(token *jwt.Token) (interface{}, error) {
 		return []byte(config.AppConfig.JwtSecret), nil
 	})
 
-	if err != nil || !token.Valid {
+	if err != nil {
+		logger.Log.Printf("JWT error: %v", err)
 		return nil, errors.New("invalid or expired token")
+	}
+	if !token.Valid {
+		logger.Log.Println("Token is not valid")
+		return nil, errors.New("invalid token")
 	}
 
 	claims, ok := token.Claims.(*models.JWTClaims)
@@ -51,12 +61,14 @@ func VerifyToken(db *gorm.DB, tokenStr string) (*models.JWTClaims, error) {
 	}
 
 	var session models.UserSession
-	userSession, err := session.GetUserSession(db, claims.UserID, tokenStr)
-	if err != nil {
-		return nil, err
+	_, sessionErr := session.GetUserSession(db, claims.UserID, tokenStr)
+	if sessionErr != nil {
+		logger.Log.Printf("Error getting user session from JWT session: %v", sessionErr)
+		return nil, sessionErr
 	}
 
-	if time.Now().After(userSession.ExpiresAt) {
+	if time.Now().UTC().After(claims.ExpiresAt.Time) {
+		logger.Log.Println("token has expired")
 		return nil, errors.New("token has expired")
 	}
 

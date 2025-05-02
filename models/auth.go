@@ -1,9 +1,10 @@
 package models
 
 import (
-	"log"
-	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/config"
 	"time"
+
+	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/config"
+	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/internal/logger"
 
 	"gorm.io/gorm"
 )
@@ -15,7 +16,7 @@ type User struct {
 	Password  string `gorm:"not null"`
 	FirstName string `gorm:"not null"`
 	LastName  string `gorm:"not null"`
-	IsActive  bool   `gorm:"default:true"`
+	IsActive  bool   `gorm:"default:false"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
 	DeletedAt gorm.DeletedAt `gorm:"index"`
@@ -41,6 +42,7 @@ type LogoutRequest struct {
 func (u *User) CreateUser(db *gorm.DB, user *User) error {
 	err := config.CreateOneRecord(db, user)
 	if err != nil {
+		logger.Log.Printf("Error creating user: %v", err)
 		return err
 	}
 
@@ -50,21 +52,33 @@ func (u *User) CreateUser(db *gorm.DB, user *User) error {
 func (u *User) GetUserByEmail(db *gorm.DB, email string) (*User, error) {
 	var user User
 
-	err := config.FindOneByField(db, user, "email", email)
+	err := config.FindOneByField(db, &user, "email", email)
 	if err != nil {
-		log.Printf("Error finding by one field: %v", err)
+		logger.Log.Printf("Error finding by one field: %v", err)
 		return nil, err
 	}
 
 	return &user, nil
 }
 
+func (u *User) IsUserActive(db *gorm.DB, isActive bool) (bool, error) {
+	var user User
+
+	err := config.FindOneByField(db, &user, "is_active", isActive)
+	if err != nil {
+		logger.Log.Printf("Error finding by one field: %v", err)
+		return false, err
+	}
+
+	return user.IsActive, nil
+}
+
 func (u *User) GetUserByUsername(db *gorm.DB, name string) (*User, error) {
 	var user User
 
-	err := config.FindOneByField(db, user, "name", name)
+	err := config.FindOneByField(db, &user, "name", name)
 	if err != nil {
-		log.Printf("Error getting user by username: %v", err)
+		logger.Log.Printf("Error getting user by username: %v", err)
 		return nil, err
 	}
 
@@ -74,9 +88,9 @@ func (u *User) GetUserByUsername(db *gorm.DB, name string) (*User, error) {
 func (u *User) GetUserByID(db *gorm.DB, id string) (*User, error) {
 	var user User
 
-	err := config.FindByID(db, user, id)
+	err := config.FindByID(db, &user, id)
 	if err != nil {
-		log.Printf("Error getting user by ID: %v", err)
+		logger.Log.Printf("Error getting user by ID: %v", err)
 		return nil, err
 	}
 
@@ -86,7 +100,7 @@ func (u *User) GetUserByID(db *gorm.DB, id string) (*User, error) {
 func (u *User) UpdateUserPassword(db *gorm.DB, user *User) error {
 	err := config.UpdateOneFieldByID(db, user, user.ID, "password", user.Password)
 	if err != nil {
-		log.Printf("Error updating user password: %v", err)
+		logger.Log.Printf("Error updating user password: %v", err)
 		return err
 	}
 
