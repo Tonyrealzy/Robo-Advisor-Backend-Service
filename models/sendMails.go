@@ -63,20 +63,11 @@ func SendPasswordResetEmail(toEmail, username, token string) error {
 		return fmt.Errorf("failed to execute email template: %v", err)
 	}
 
-	subject := "SMTP Test from Brevo"
-	bodyTest := "✅ This is a test email to verify Brevo SMTP settings."
-
 	m := gomail.NewMessage()
-	m.SetHeader("From", smtpUser)
+	m.SetHeader("From", smtpUser, appName+" Support")
 	m.SetHeader("To", toEmail)
-	m.SetHeader("Subject", subject)
-	m.SetBody("text/plain", bodyTest)
-
-	// m := gomail.NewMessage()
-	// m.SetHeader("From", smtpUser, appName+" Support")
-	// m.SetHeader("To", toEmail)
-	// m.SetHeader("Subject", "Reset your password")
-	// m.SetBody("text/html", body.String())
+	m.SetHeader("Subject", "Reset your password")
+	m.SetBody("text/html", body.String())
 
 	d := gomail.NewDialer(smtpHost, smtpPort, smtpUser, smtpPass)
 
