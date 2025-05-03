@@ -1,7 +1,16 @@
 package models
 
 import (
+	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/config"
 	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/internal/logger"
+
+	"bytes"
+	"fmt"
+	"html/template"
+	"os"
+	"path/filepath"
+	"time"
+
 	"gopkg.in/gomail.v2"
 )
 
@@ -12,20 +21,70 @@ type Email struct {
 	SenderPass  string
 }
 
-func SendEmail(cfg Email, to []string, subject, body string) error {
-	m := gomail.NewMessage()
+type EmailTemplateData struct {
+	Username  string
+	ResetLink string
+	AppName   string
+	Year      int
+}
 
-	m.SetHeader("From", cfg.SenderEmail)
-	m.SetHeader("To", to...)
-	m.SetHeader("Subject", subject)
-	m.SetBody("text/html", body)
+func SendPasswordResetEmail(toEmail, username, token string) error {
+	const smtpPort = 587
+	smtpHost := config.AppConfig.MailSmtpHost
+	smtpUser := config.AppConfig.MailSmtpUsername
+	smtpPass := config.AppConfig.MailSmtpPassword
+	appName := config.AppConfig.MailSender
 
-	d := gomail.NewDialer(cfg.SMTPHost, cfg.SMTPPort, cfg.SenderEmail, cfg.SenderPass)
+	resetURL := fmt.Sprintf("%s/reset-password?token=%s", config.AppConfig.FrontendHost, token)
 
-	if err := d.DialAndSend(m); err != nil {
-		logger.Log.Printf("Error sending mail: %v", err)
-		return err
+	// Reading HTML template from file
+	templatePath := filepath.Join("internal", "templates", "passwordReset.html")
+	tmplBytes, err := os.ReadFile(templatePath)
+	if err != nil {
+		logger.Log.Printf("failed to read email template file: %v", err)
+		return fmt.Errorf("failed to read email template file: %v", err)
 	}
 
+	tmpl, err := template.New("resetPassword").Parse(string(tmplBytes))
+	if err != nil {
+		logger.Log.Printf("failed to parse email template: %v", err)
+		return fmt.Errorf("failed to parse email template: %v", err)
+	}
+
+	var body bytes.Buffer
+	err = tmpl.Execute(&body, EmailTemplateData{
+		Username:  username,
+		ResetLink: resetURL,
+		AppName:   appName,
+		Year:      time.Now().Year(),
+	})
+	if err != nil {
+		logger.Log.Printf("failed to execute email template: %v", err)
+		return fmt.Errorf("failed to execute email template: %v", err)
+	}
+
+	subject := "SMTP Test from Brevo"
+	bodyTest := "✅ This is a test email to verify Brevo SMTP settings."
+
+	m := gomail.NewMessage()
+	m.SetHeader("From", smtpUser)
+	m.SetHeader("To", toEmail)
+	m.SetHeader("Subject", subject)
+	m.SetBody("text/plain", bodyTest)
+
+	// m := gomail.NewMessage()
+	// m.SetHeader("From", smtpUser, appName+" Support")
+	// m.SetHeader("To", toEmail)
+	// m.SetHeader("Subject", "Reset your password")
+	// m.SetBody("text/html", body.String())
+
+	d := gomail.NewDialer(smtpHost, smtpPort, smtpUser, smtpPass)
+
+	if err := d.DialAndSend(m); err != nil {
+		logger.Log.Printf("failed to send email: %v", err)
+		return fmt.Errorf("failed to send email: %v", err)
+	}
+
+	logger.Log.Println("Sent email successfully!")
 	return nil
 }

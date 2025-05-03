@@ -13,6 +13,9 @@ type Config struct {
 	FrontendHost     string
 	Port             string
 	BrevoKey         string
-	MailSender         string
 	AppEnv           string
+	MailSender       string
+	MailSmtpHost     string
+	MailSmtpUsername string
+	MailSmtpPassword string
 }
