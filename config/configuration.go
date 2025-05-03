@@ -38,6 +38,9 @@ func LoadEnv() (repository.Config, error) {
 		BrevoKey:         os.Getenv("BREVO_KEY"),
 		AppEnv:           os.Getenv("APP_ENV"),
 		MailSender:       os.Getenv("MAIL_SENDER"),
+		MailSmtpHost:     os.Getenv("MAIL_SMTP_HOST"),
+		MailSmtpUsername: os.Getenv("MAIL_SMTP_USERNAME"),
+		MailSmtpPassword: os.Getenv("MAIL_SMTP_PASSWORD"),
 	}
 	logger.Log.Println("Loaded .env file successfully")
 
