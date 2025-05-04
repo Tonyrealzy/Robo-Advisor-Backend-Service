@@ -5,27 +5,27 @@ import (
 	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/internal/logger"
 	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/models"
 	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/services"
-	"net/http"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"net/http"
 )
 
 // @Summary      AI Service
-// @Description  Retrieval of previous responses from the AI Service
+// @Description  Retrieval of previous responses from the AI Service by date range
 // @Tags         AI
 // @Accept       json
 // @Produce      json
 // @Param        page   query     int     false  "Page number"
 // @Param        limit  query     int     false  "Number of items per page"
-// @Param        days   query     int     true   "Number of days to go back"
+// @Param        from   query     string     false   "From Date"
+// @Param        to   query     string     false   "To Date"
 // @Success      200   {object}  models.AIResponse
 // @Failure      400   {object}  models.ErrorResponse
 // @Failure      401   {object}  models.AuthErrorResponse
 // @Failure      500   {object}  models.ServerErrorResponse
 // @Security BearerAuth
-// @Router       /ai/fetch-response/days [get]
-func (base *Controller) GetPreviousAiResponseByNoOfDays(c *gin.Context) {
+// @Router       /ai/fetch-response/date [get]
+func (base *Controller) GetPreviousAiResponseByDateRange(c *gin.Context) {
 	userRaw, exists := c.Get("user")
 	if !exists {
 		logger.Log.Println("Invalid or expired token")
@@ -40,22 +40,10 @@ func (base *Controller) GetPreviousAiResponseByNoOfDays(c *gin.Context) {
 		return
 	}
 
-	daysStr := c.Query("days")
-	if daysStr == "" {
-		logger.Log.Println("days parameter is required")
-		c.JSON(http.StatusBadRequest, gin.H{"status": "error", "error": "days parameter is required"})
-		return
-	}
-
-	days, err := strconv.Atoi(daysStr)
-	if err != nil || days <= 0 {
-		logger.Log.Println("invalid days value")
-		c.JSON(http.StatusBadRequest, gin.H{"status": "error", "error": "invalid days value"})
-		return
-	}
-
+	fromDate, toDate := config.GetDateFilterQuery(c)
 	pagination := config.GetPagination(c)
-	responses, err := services.FetchAIResponsesByNoOfDays(base.Db, user.ID, days, pagination)
+
+	responses, err := services.FetchAIResponsesByDateRange(base.Db, user.ID, fromDate, toDate, pagination)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"status": "error", "error": err.Error()})
 		return

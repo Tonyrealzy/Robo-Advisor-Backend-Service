@@ -1,11 +1,11 @@
 package ai
 
 import (
-	"net/http"
 	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/config"
 	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/internal/logger"
 	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/models"
 	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/services"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
@@ -49,5 +49,7 @@ func (base *Controller) GetPreviousAiResponseForToday(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"status": "success",
 		"data":   responses,
+		"page":   pagination.Page,
+		"limit":  pagination.Limit,
 	})
 }
