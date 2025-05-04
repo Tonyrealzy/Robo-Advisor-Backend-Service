@@ -26,6 +26,11 @@ type PaginationResponse struct {
 	TotalPagesCount int `json:"total_pages_count"`
 }
 
+type DateFilterQuery struct {
+	FromDate string `form:"from"`
+	ToDate   string `form:"to"`
+}
+
 func GetPagination(c *gin.Context) Pagination {
 	var (
 		page  *int
@@ -54,6 +59,34 @@ func GetPagination(c *gin.Context) Pagination {
 		return Pagination{Page: defaultPage, Limit: defaultLimit}
 	}
 }
+
+func GetDateFilterQuery(c *gin.Context) (time.Time, time.Time) {
+	const layout = "02-01-2006"
+	fromStr := c.Query("from")
+	toStr := c.Query("to")
+
+	now := time.Now()
+	defaultFrom := time.Date(2025, 1, 1, 0, 0, 0, 0, time.UTC)
+	defaultTo := now
+
+	fromDate := defaultFrom
+	toDate := defaultTo
+
+	if fromStr != "" {
+		if parsed, err := time.Parse(layout, fromStr); err == nil {
+			fromDate = parsed
+		}
+	}
+
+	if toStr != "" {
+		if parsed, err := time.Parse(layout, toStr); err == nil {
+			toDate = parsed
+		}
+	}
+
+	return fromDate, toDate
+}
+
 
 func FindOneByField(db *gorm.DB, model interface{}, field string, value interface{}) error {
 	result := db.Where(fmt.Sprintf("%s = ?", field), value).First(model)

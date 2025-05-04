@@ -4,9 +4,9 @@ import (
 	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/config"
 	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/internal/logger"
 
-	"time"
 	"gorm.io/datatypes"
 	"gorm.io/gorm"
+	"time"
 )
 
 type AIServiceRequest struct {
@@ -78,6 +78,18 @@ func (a *AIPersistedResponse) GetResponseByNoOfDays(db *gorm.DB, userID string, 
 	err := config.FindByUserAndDateRangePaginated(db, &results, userID, start, now, pagination)
 	if err != nil {
 		logger.Log.Printf("Error getting all AI responses by number of days: %v", err)
+		return nil, err
+	}
+
+	return results, err
+}
+
+func (a *AIPersistedResponse) GetResponseByDateRange(db *gorm.DB, userID string, from, to time.Time, pagination config.Pagination) ([]AIPersistedResponse, error) {
+	var results []AIPersistedResponse
+
+	err := config.FindByUserAndDateRangePaginated(db, &results, userID, from, to, pagination)
+	if err != nil {
+		logger.Log.Printf("Error getting all AI responses by date range: %v", err)
 		return nil, err
 	}
 

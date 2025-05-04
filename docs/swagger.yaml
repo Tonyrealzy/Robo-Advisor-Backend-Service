@@ -195,6 +195,52 @@ info:
   title: Robo-Advisor API
   version: "1.0"
 paths:
+  /ai/fetch-response/date:
+    get:
+      consumes:
+      - application/json
+      description: Retrieval of previous responses from the AI Service by date range
+      parameters:
+      - description: Page number
+        in: query
+        name: page
+        type: integer
+      - description: Number of items per page
+        in: query
+        name: limit
+        type: integer
+      - description: From Date
+        in: query
+        name: from
+        type: string
+      - description: To Date
+        in: query
+        name: to
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.AIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.AuthErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ServerErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: AI Service
+      tags:
+      - AI
   /ai/fetch-response/days:
     get:
       consumes:

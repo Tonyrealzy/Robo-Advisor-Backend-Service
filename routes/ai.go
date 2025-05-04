@@ -14,4 +14,5 @@ func SetupAIRoutes(router *gin.RouterGroup, controller ai.Controller) {
 	protected.POST("/send-request", controller.GetAiResponse)
 	protected.GET("/fetch-response/today", controller.GetPreviousAiResponseForToday)
 	protected.GET("/fetch-response/days", controller.GetPreviousAiResponseByNoOfDays)
+	protected.GET("/fetch-response/date", controller.GetPreviousAiResponseByDateRange)
 }
