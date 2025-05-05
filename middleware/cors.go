@@ -14,7 +14,7 @@ func SetupRouter() *gin.Engine {
 
 	r.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{"https://your-frontend.com", "http://localhost:3000", "http://localhost:3001", "http://localhost:4200"},
-		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE"},
 		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
 		ExposeHeaders:    []string{"Content-Length"},
 		AllowCredentials: true,
