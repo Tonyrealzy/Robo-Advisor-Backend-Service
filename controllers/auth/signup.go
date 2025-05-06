@@ -1,8 +1,8 @@
 package auth
 
 import (
-	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/models"
 	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/internal/logger"
+	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/models"
 	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/services/auth"
 	"net/http"
 
@@ -28,15 +28,9 @@ func (base *Controller) Signup(c *gin.Context) {
 		return
 	}
 
-	signupUser, signupErr := auth.Signup(base.Db, input.Email, input.Password, input.FirstName, input.LastName, input.Name)
+	_, linkMsg, signupErr := auth.Signup(base.Db, input.Email, input.Password, input.FirstName, input.LastName, input.Name)
 	if signupErr != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"status": "error", "error": signupErr.Error()})
-		return
-	}
-
-	linkMsg, linkErr := auth.SendLinkToUser(base.Db, signupUser)
-	if linkErr != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"status": "error", "error": linkErr.Error()})
 		return
 	}
 

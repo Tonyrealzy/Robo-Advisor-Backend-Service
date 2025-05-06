@@ -13,7 +13,7 @@ import (
 	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/utils"
 )
 
-func SendLinkToUser(db *gorm.DB, existingUser *models.User) (string, error) {
+func SendSignUpLinkToUser(db *gorm.DB, existingUser *models.User) (string, error) {
 	var password models.PasswordReset
 
 	tokenString := fmt.Sprintf("%s-%s-%s", existingUser.Email, existingUser.ID, time.Now().UTC().String())
@@ -38,7 +38,7 @@ func SendLinkToUser(db *gorm.DB, existingUser *models.User) (string, error) {
 
 	// Send a link with the reset token to the user's email
 	// emailErr := services.SendResetEmail(existingUser.Email, existingUser.Name, hashedToken)
-	emailErr := models.SendPasswordResetEmail(existingUser.Email, existingUser.Name, hashedToken)
+	emailErr := models.SendSignUpEmail(existingUser.Email, existingUser.Name, hashedToken)
 	if emailErr != nil {
 		return "", emailErr
 	}
