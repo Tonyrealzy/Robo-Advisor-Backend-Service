@@ -79,7 +79,6 @@ func ResendLinkToUser(db *gorm.DB, email string) (string, error) {
 	}
 	
 	// Send a link with the reset token to the user's email
-	// emailErr := services.SendResetEmail(existingUser.Email, existingUser.Name, reset.Token)
 	emailErr := models.SendPasswordResetEmail(existingUser.Email, existingUser.Name, reset.Token)
 	if emailErr != nil {
 		return "", emailErr
