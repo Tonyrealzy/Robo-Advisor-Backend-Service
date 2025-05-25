@@ -35,8 +35,12 @@ func Login(db *gorm.DB, email, password string) (string, error) {
 		return "", userActiveErr
 	}
 	if !userIsActive {
-		logger.Log.Printf("User is inactive")
-		return "", errors.New("user is inactive")
+		logger.Log.Printf("User is inactive. Resending sign-up confirmation link.")
+		_, messageErr := ResendLinkToUser(db, email)
+		if messageErr != nil {
+			return "", messageErr
+		}
+		return "", errors.New("user is inactive. check mail for activation link")
 	}
 
 	token, err := middleware.CreateToken(existingUser.ID, existingUser.Email)
