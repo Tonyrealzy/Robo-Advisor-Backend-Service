@@ -35,6 +35,10 @@ type LoginRequest struct {
 	Password string `json:"password" binding:"required"`
 }
 
+type ProfileRequest struct {
+	Email string `json:"email" binding:"required,email"`
+}
+
 type LogoutRequest struct {
 	Email string `json:"email" binding:"required,email"`
 }

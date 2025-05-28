@@ -3,6 +3,7 @@ package routes
 import (
 	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/controllers/ai"
 	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/controllers/auth"
+	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/controllers/profile"
 	_ "github.com/Tonyrealzy/Robo-Advisor-Backend-Service/docs"
 
 	"github.com/gin-gonic/gin"
@@ -17,10 +18,14 @@ func SetupRoutes(router *gin.Engine, db *gorm.DB) {
 
 	authController := auth.Controller{Db: db}
 	aiController := ai.Controller{Db: db}
+	profileController := profile.Controller{Db: db}
 
 	authGroup := router.Group("/auth")
 	SetupAuthRoutes(authGroup, authController)
 
 	aiGroup := router.Group("/ai")
 	SetupAIRoutes(aiGroup, aiController)
+
+	profileGroup := router.Group("/")
+	SetupProfileRoutes(profileGroup, profileController)
 }

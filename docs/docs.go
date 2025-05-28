@@ -606,6 +606,58 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/profile": {
+            "post": {
+                "description": "Get user details by email",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "User Profile",
+                "parameters": [
+                    {
+                        "description": "Email",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.ProfileRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.ProfileResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/models.AuthErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ServerErrorResponse"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -811,6 +863,54 @@ const docTemplate = `{
                 "message": {
                     "type": "string",
                     "example": "Password reset successful"
+                },
+                "status": {
+                    "type": "string",
+                    "example": "success"
+                }
+            }
+        },
+        "models.Profile": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "example": "success@gmail.com"
+                },
+                "firstname": {
+                    "type": "string",
+                    "example": "Olu"
+                },
+                "isActive": {
+                    "type": "boolean",
+                    "example": false
+                },
+                "lastname": {
+                    "type": "string",
+                    "example": "Ade"
+                },
+                "username": {
+                    "type": "string",
+                    "example": "olumighty"
+                }
+            }
+        },
+        "models.ProfileRequest": {
+            "type": "object",
+            "required": [
+                "email"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.ProfileResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/models.Profile"
                 },
                 "status": {
                     "type": "string",
