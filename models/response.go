@@ -58,3 +58,16 @@ type AIResponse struct {
 	Status string           `json:"status" example:"success"`
 	Data   InvestmentAdvice `json:"data,omitempty"`
 }
+
+type Profile struct {
+	Email     string `json:"email" example:"success@gmail.com"`
+	Name      string `json:"username" example:"olumighty"`
+	FirstName string `json:"firstname" example:"Olu"`
+	LastName  string `json:"lastname" example:"Ade"`
+	IsActive  bool   `json:"isActive" example:"false"`
+}
+
+type ProfileResponse struct {
+	Status string `json:"status" example:"success"`
+	Data   Profile   `json:"data,omitempty"`
+}

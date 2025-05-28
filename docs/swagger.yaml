@@ -142,6 +142,39 @@ definitions:
         example: success
         type: string
     type: object
+  models.Profile:
+    properties:
+      email:
+        example: success@gmail.com
+        type: string
+      firstname:
+        example: Olu
+        type: string
+      isActive:
+        example: false
+        type: boolean
+      lastname:
+        example: Ade
+        type: string
+      username:
+        example: olumighty
+        type: string
+    type: object
+  models.ProfileRequest:
+    properties:
+      email:
+        type: string
+    required:
+    - email
+    type: object
+  models.ProfileResponse:
+    properties:
+      data:
+        $ref: '#/definitions/models.Profile'
+      status:
+        example: success
+        type: string
+    type: object
   models.ResendLinkResponse:
     properties:
       message:
@@ -575,6 +608,40 @@ paths:
       summary: Confirm email
       tags:
       - Auth
+  /profile:
+    post:
+      consumes:
+      - application/json
+      description: Get user details by email
+      parameters:
+      - description: Email
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.ProfileRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ProfileResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.AuthErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ServerErrorResponse'
+      summary: User Profile
+      tags:
+      - Profile
 securityDefinitions:
   BearerAuth:
     in: header

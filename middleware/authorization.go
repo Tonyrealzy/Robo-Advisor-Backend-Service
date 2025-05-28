@@ -24,7 +24,6 @@ func JWTAuthMiddleware(db *gorm.DB) gin.HandlerFunc {
 		}
 
 		tokenStr := strings.TrimPrefix(authHeader, "Bearer ")
-		logger.Log.Printf("Token Stripped: %v", tokenStr)
 		claims, err := GetUserClaims(db, tokenStr)
 		if err != nil {
 			logger.Log.Println("Invalid or expired token")
