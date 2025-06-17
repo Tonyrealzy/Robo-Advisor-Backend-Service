@@ -33,6 +33,7 @@ func LoadEnv() (repository.Config, error) {
 		JwtSecret:        os.Getenv("JWT_SECRET"),
 		JwtExpiration:    os.Getenv("JWT_EXPIRATION"),
 		AiService:        os.Getenv("AI_SERVICE"),
+		ApiKey:           os.Getenv("GOOGLE_API_KEY"),
 		FrontendHost:     os.Getenv("FRONTEND_HOST"),
 		Port:             os.Getenv("PORT"),
 		BrevoKey:         os.Getenv("BREVO_KEY"),

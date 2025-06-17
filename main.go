@@ -22,14 +22,18 @@ func main() {
 	logger.InitLogger()
 	logger.Log.Info("Starting Robo Advisor Backend Service")
 
-	_, err := config.LoadEnv()
+	repo, err := config.LoadEnv()
 	if err != nil {
 		logger.Log.Errorf("Failed to load env credentials: %v", err)
 	}
 
-	initErr := services.InitEmailService()
-	if initErr != nil {
-		logger.Log.Fatalf("Failed to initialise email service: %v", initErr)
+	client, err := models.NewAIService(repo.ApiKey)
+	if err != nil {
+		logger.Log.Errorf("Failed to load AI Service: %v", err)
+	}
+
+	if err := services.InitEmailService(); err != nil {
+		logger.Log.Fatalf("Failed to initialise email service: %v", err)
 	}
 
 	db := config.ConnectToDatabase()
@@ -38,9 +42,9 @@ func main() {
 	}
 
 	if config.AppConfig.AppEnv == "development" {
-		dbErr := db.AutoMigrate(&models.User{}, &models.PasswordReset{}, &models.UserSession{}, &models.AIPersistedResponse{})
-		if dbErr != nil {
-			logger.Log.Fatalf("Migration failed: %v", dbErr)
+		err := db.AutoMigrate(&models.User{}, &models.PasswordReset{}, &models.UserSession{}, &models.AIPersistedResponse{})
+		if err != nil {
+			logger.Log.Fatalf("Migration failed: %v", err)
 		} else {
 			logger.Log.Println("Database auto-migrated successfully!")
 		}
@@ -48,7 +52,7 @@ func main() {
 
 	router := middleware.SetupRouter()
 
-	routes.SetupRoutes(router, db)
+	routes.SetupRoutes(router, db, client)
 
 	port := config.AppConfig.Port
 	if port == "" {

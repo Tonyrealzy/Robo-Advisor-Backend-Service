@@ -5,6 +5,7 @@ import (
 	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/controllers/auth"
 	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/controllers/profile"
 	_ "github.com/Tonyrealzy/Robo-Advisor-Backend-Service/docs"
+	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/models"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -13,11 +14,11 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
-func SetupRoutes(router *gin.Engine, db *gorm.DB) {
+func SetupRoutes(router *gin.Engine, db *gorm.DB, client *models.AIServiceImpl) {
 	router.GET("/api/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	authController := auth.Controller{Db: db}
-	aiController := ai.Controller{Db: db}
+	aiController := ai.Controller{Db: db, Client: client}
 	profileController := profile.Controller{Db: db}
 
 	authGroup := router.Group("/auth")

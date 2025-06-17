@@ -214,6 +214,63 @@ const docTemplate = `{
                 }
             }
         },
+        "/ai/request": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Interaction with the AI Service",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "AI"
+                ],
+                "summary": "AI Service",
+                "parameters": [
+                    {
+                        "description": "Interaction with the Golang AI Service",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.AIServiceRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.AIResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/models.AuthErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.ServerErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/ai/send-request": {
             "post": {
                 "security": [
@@ -234,7 +291,7 @@ const docTemplate = `{
                 "summary": "AI Service",
                 "parameters": [
                     {
-                        "description": "Interaction with the AI Service",
+                        "description": "Interaction with the Python AI Service",
                         "name": "body",
                         "in": "body",
                         "required": true,
@@ -675,6 +732,16 @@ const docTemplate = `{
         },
         "models.AIServiceRequest": {
             "type": "object",
+            "required": [
+                "age",
+                "amount",
+                "currency",
+                "investmentHorizon",
+                "investmentKnowledge",
+                "investmentPurpose",
+                "location",
+                "riskTolerance"
+            ],
             "properties": {
                 "age": {
                     "type": "integer"

@@ -11,6 +11,7 @@ func SetupAIRoutes(router *gin.RouterGroup, controller ai.Controller) {
 	protected := router.Group("/")
 	protected.Use(middleware.JWTAuthMiddleware(controller.Db))
 
+	protected.POST("/request", controller.GetAIResponseNew)
 	protected.POST("/send-request", controller.GetAiResponse)
 	protected.GET("/fetch-response/today", controller.GetPreviousAiResponseForToday)
 	protected.GET("/fetch-response/days", controller.GetPreviousAiResponseByNoOfDays)

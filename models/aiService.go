@@ -4,27 +4,69 @@ import (
 	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/config"
 	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/internal/logger"
 
+	"encoding/json"
+	"fmt"
 	"gorm.io/datatypes"
 	"gorm.io/gorm"
+	"strconv"
 	"time"
 )
 
+type IntString int
+
+func (i *IntString) UnmarshalJSON(data []byte) error {
+	var tempInt int
+	if err := json.Unmarshal(data, &tempInt); err == nil {
+		*i = IntString(tempInt)
+		return nil
+	}
+
+	var tempStr string
+	if err := json.Unmarshal(data, &tempStr); err == nil {
+		parsedInt, err := strconv.Atoi(tempStr)
+		if err != nil {
+			return fmt.Errorf("cannot parse string to int: %v", err)
+		}
+		*i = IntString(parsedInt)
+		return nil
+	}
+
+	return fmt.Errorf("unsupported type for IntString: %s", string(data))
+}
+
 type AIServiceRequest struct {
-	Age                 int     `json:"age"`
-	Location            string  `json:"location"`
-	InvestmentKnowledge string  `json:"investmentKnowledge"`
-	InvestmentPurpose   string  `json:"investmentPurpose"`
-	InvestmentHorizon   int     `json:"investmentHorizon"`
-	RiskTolerance       string  `json:"riskTolerance"`
-	Amount              float64 `json:"amount"`
-	Currency            string  `json:"currency"`
+	Age                 int     `json:"age" validate:"required"`
+	Location            string  `json:"location" validate:"required"`
+	InvestmentKnowledge string  `json:"investmentKnowledge" validate:"required"`
+	InvestmentPurpose   string  `json:"investmentPurpose" validate:"required"`
+	InvestmentHorizon   int     `json:"investmentHorizon" validate:"required"`
+	RiskTolerance       string  `json:"riskTolerance" validate:"required"`
+	Amount              float64 `json:"amount" validate:"required"`
+	Currency            string  `json:"currency" validate:"required"`
+}
+
+type Recommendation struct {
+	FinancialProduct     string    `json:"financial_product"`
+	Ticker               string    `json:"ticker"`
+	Provider             string    `json:"provider"`
+	BriefDescription     string    `json:"brief_description"`
+	ExpectedReturn       string    `json:"expected_return"`
+	Composition          IntString    `json:"composition"`
+	Principal            IntString `json:"principal"`
+	EstimatedReturnValue IntString `json:"estimated_return_value"`
+}
+
+type AIFirstResponse struct {
+	Recommendations []Recommendation `json:"recommendations"`
 }
 
 type AIServiceResponse struct {
-	Status  string      `json:"status"`
-	Data    interface{} `json:"data,omitempty"`
-	Message string      `json:"message,omitempty"`
-	Error   string      `json:"error,omitempty"`
+	Status    string      `json:"status"`
+	Query     interface{} `json:"query,omitempty"`
+	Data      interface{} `json:"data,omitempty"`
+	Message   string      `json:"message,omitempty"`
+	Error     string      `json:"error,omitempty"`
+	CreatedAt time.Time   `json:"created_at,omitempty"`
 }
 
 type AIPersistedResponse struct {
