@@ -64,3 +64,61 @@ func CallAIService(db *gorm.DB, req models.AIServiceRequest, user models.User) (
 
 	return &parsedResponse, nil
 }
+
+func PostToAI(client *models.AIServiceImpl, req models.AIServiceRequest) ([]models.Recommendation, error) {
+	response, err := client.FineTunedResponse(req)
+	if err != nil {
+		return nil, err
+	}
+
+	formattedResp, err := utils.FormatResponse(response)
+	if err != nil {
+		return nil, err
+	}
+
+	return formattedResp, nil
+}
+
+func CallAIServiceNew(db *gorm.DB, client *models.AIServiceImpl, req models.AIServiceRequest, user models.User) (*models.AIServiceResponse, error) {
+
+	response, err := PostToAI(client, req)
+	if err != nil {
+		logger.Log.Printf("failed to get response from AI: %v", err)
+		return nil, fmt.Errorf("failed to get response from AI: %v", err)
+	}
+
+	queryJSON, err := json.Marshal(req)
+	if err != nil {
+		logger.Log.Printf("failed to marshal request: %v", err)
+		return nil, fmt.Errorf("failed to marshal request: %v", err)
+	}
+
+	dataJSON, err := json.Marshal(response)
+	if err != nil {
+		logger.Log.Printf("failed to marshal response data: %v", err)
+		return nil, fmt.Errorf("failed to marshal response data: %v", err)
+	}
+
+	aiServiceResponse := models.AIPersistedResponse{
+		User:      user,
+		UserID:    user.ID,
+		Query:     datatypes.JSON(queryJSON),
+		Data:      datatypes.JSON(dataJSON),
+		Status:    "success",
+		CreatedAt: time.Now().UTC(),
+		UpdatedAt: time.Now().UTC(),
+	}
+
+	createErr := config.CreateOneRecord(db, &aiServiceResponse)
+	if createErr != nil {
+		logger.Log.Printf("error creating AI Service chat entry: %v", createErr)
+		return nil, createErr
+	}
+
+	finalResp := models.AIServiceResponse{
+		Status:  "success",
+		Data:    datatypes.JSON(dataJSON),
+	}
+
+	return &finalResp, err
+}

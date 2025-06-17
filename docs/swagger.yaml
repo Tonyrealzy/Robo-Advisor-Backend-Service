@@ -26,6 +26,15 @@ definitions:
         type: string
       riskTolerance:
         type: string
+    required:
+    - age
+    - amount
+    - currency
+    - investmentHorizon
+    - investmentKnowledge
+    - investmentPurpose
+    - location
+    - riskTolerance
     type: object
   models.AuthErrorResponse:
     properties:
@@ -355,13 +364,49 @@ paths:
       summary: AI Service
       tags:
       - AI
+  /ai/request:
+    post:
+      consumes:
+      - application/json
+      description: Interaction with the AI Service
+      parameters:
+      - description: Interaction with the Golang AI Service
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.AIServiceRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.AIResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.AuthErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ServerErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: AI Service
+      tags:
+      - AI
   /ai/send-request:
     post:
       consumes:
       - application/json
       description: Interaction with the AI Service
       parameters:
-      - description: Interaction with the AI Service
+      - description: Interaction with the Python AI Service
         in: body
         name: body
         required: true

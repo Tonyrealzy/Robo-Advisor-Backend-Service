@@ -8,27 +8,21 @@ import (
 	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/services"
 
 	"github.com/gin-gonic/gin"
-	"gorm.io/gorm"
 )
-
-type Controller struct {
-	Db     *gorm.DB
-	Client *models.AIServiceImpl
-}
 
 // @Summary      AI Service
 // @Description  Interaction with the AI Service
 // @Tags         AI
 // @Accept       json
 // @Produce      json
-// @Param        body  body      models.AIServiceRequest  true  "Interaction with the Python AI Service"
+// @Param        body  body      models.AIServiceRequest  true  "Interaction with the Golang AI Service"
 // @Success      200   {object}  models.AIResponse
 // @Failure      400   {object}  models.ErrorResponse
 // @Failure      401   {object}  models.AuthErrorResponse
 // @Failure      500   {object}  models.ServerErrorResponse
 // @Security BearerAuth
-// @Router       /ai/send-request [post]
-func (base *Controller) GetAiResponse(c *gin.Context) {
+// @Router       /ai/request [post]
+func (base *Controller) GetAIResponseNew(c *gin.Context) {
 	var input models.AIServiceRequest
 
 	userRaw, exists := c.Get("user")
@@ -52,7 +46,7 @@ func (base *Controller) GetAiResponse(c *gin.Context) {
 		return
 	}
 
-	resp, respErr := services.CallAIService(base.Db, input, *user)
+	resp, respErr := services.CallAIServiceNew(base.Db, base.Client, input, *user)
 	if respErr != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"status": "error", "error": respErr.Error()})
 		return

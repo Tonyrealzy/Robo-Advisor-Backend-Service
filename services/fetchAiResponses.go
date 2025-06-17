@@ -23,10 +23,12 @@ func FetchAIResponsesForToday(db *gorm.DB, userID string, pagination config.Pagi
 
 	for _, r := range persistedResponse {
 		transformed := models.AIServiceResponse{
-			Status:  r.Status,
-			Data:    r.Data,
-			Message: r.Message,
-			Error:   r.Error,
+			Status:    r.Status,
+			Data:      r.Data,
+			Query:     r.Query,
+			Message:   r.Message,
+			Error:     r.Error,
+			CreatedAt: r.CreatedAt,
 		}
 		transformedResponses = append(transformedResponses, transformed)
 	}
@@ -47,10 +49,12 @@ func FetchAIResponsesByNoOfDays(db *gorm.DB, userID string, number int, paginati
 
 	for _, r := range persistedResponse {
 		transformed := models.AIServiceResponse{
-			Status:  r.Status,
-			Data:    r.Data,
-			Message: r.Message,
-			Error:   r.Error,
+			Status:    r.Status,
+			Data:      r.Data,
+			Query:     r.Query,
+			Message:   r.Message,
+			Error:     r.Error,
+			CreatedAt: r.CreatedAt,
 		}
 		transformedResponses = append(transformedResponses, transformed)
 	}
@@ -71,10 +75,12 @@ func FetchAIResponsesByDateRange(db *gorm.DB, userID string, from, to time.Time,
 
 	for _, r := range persistedResponse {
 		transformed := models.AIServiceResponse{
-			Status:  r.Status,
-			Data:    r.Data,
-			Message: r.Message,
-			Error:   r.Error,
+			Status:    r.Status,
+			Data:      r.Data,
+			Query:     r.Query,
+			Message:   r.Message,
+			Error:     r.Error,
+			CreatedAt: r.CreatedAt,
 		}
 		transformedResponses = append(transformedResponses, transformed)
 	}

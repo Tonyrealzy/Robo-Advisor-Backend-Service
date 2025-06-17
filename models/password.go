@@ -30,7 +30,7 @@ type PasswordChangeRequest struct {
 
 type ConfirmSignupRequest struct {
 	Token string `json:"token" binding:"required"`
-	Email string `json:"email" binding:"required"`
+	Email string `json:"email" binding:"required,email"`
 }
 
 func (p *PasswordReset) CreatePasswordReset(db *gorm.DB, passReset *PasswordReset) error {
