@@ -53,13 +53,54 @@ func SendSignUpLinkToUser(db *gorm.DB, existingUser *models.User) (string, error
 
 		return hashedToken, nil
 	} else {
-		hashedToken, err := ResendLinkToUser(db, existingUser.Email)
+		hashedToken, err := ResendSignupLinkToUser(db, existingUser.Email)
 		if err != nil {
 			return "", err
 		}
 
 		return hashedToken, nil
 	}
+}
+
+func ResendSignupLinkToUser(db *gorm.DB, email string) (string, error) {
+	var password models.PasswordReset
+	var user models.User
+
+	reset, err := password.GetPasswordResetByEmail(db, email)
+	if err != nil {
+		logger.Log.Printf("error fetching password reset model: %v", err)
+		return "", errors.New("error fetching password reset model")
+	}
+	existingUser, err := user.GetUserByEmail(db, email)
+	if err != nil {
+		logger.Log.Printf("error fetching password reset model: %v", err)
+		return "", errors.New("error fetching password reset model")
+	}
+
+	_, expiryErr := password.GetPasswordResetByToken(db, reset.Token)
+	if expiryErr != nil {
+		tokenString := fmt.Sprintf("%s-%s-%s", reset.Email, reset.UserID, time.Now().UTC().String())
+		hashedToken, err := utils.HashPassword(tokenString)
+		if err != nil {
+			logger.Log.Printf("error hashing token string: %v", err)
+			return "", err
+		}
+		reset.Token = hashedToken
+		reset.ExpiresAt = time.Now().UTC().Add(time.Minute * 30)
+		updateErr := password.UpdatePasswordReset(db, reset)
+		if updateErr != nil {
+			logger.Log.Printf("error updating token string: %v", updateErr)
+			return "", updateErr
+		}
+	}
+
+	// Send a link with the signup token to the user's email
+	emailErr := models.SendSignUpEmail(existingUser.Email, existingUser.Name, reset.Token)
+	if emailErr != nil {
+		return "", emailErr
+	}
+
+	return reset.Token, nil
 }
 
 func ResendLinkToUser(db *gorm.DB, email string) (string, error) {
