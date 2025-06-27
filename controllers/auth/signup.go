@@ -28,12 +28,12 @@ func (base *Controller) Signup(c *gin.Context) {
 		return
 	}
 
-	_, linkMsg, signupErr := auth.Signup(base.Db, input.Email, input.Password, input.FirstName, input.LastName, input.Name)
+	_, _, signupErr := auth.Signup(base.Db, input.Email, input.Password, input.FirstName, input.LastName, input.Name)
 	if signupErr != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"status": "error", "error": signupErr.Error()})
 		return
 	}
 
 	logger.Log.Println("Response successful!")
-	c.JSON(http.StatusOK, gin.H{"status": "success", "message": "User created successfully", "data": linkMsg})
+	c.JSON(http.StatusOK, gin.H{"status": "success", "message": "User created successfully"})
 }

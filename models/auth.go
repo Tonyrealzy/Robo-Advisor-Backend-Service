@@ -65,6 +65,18 @@ func (u *User) GetUserByEmail(db *gorm.DB, email string) (*User, error) {
 	return &user, nil
 }
 
+func (u *User) GetUserActivityByEmail(db *gorm.DB, email string) (*User, error) {
+	var user User
+
+	err := config.FindByTwoFields(db, &user, "email = ?", email, "is_active = ?", true)
+	if err != nil {
+		logger.Log.Printf("Error finding by email and activeness: %v", err)
+		return nil, err
+	}
+
+	return &user, nil
+}
+
 func (u *User) IsUserActive(db *gorm.DB, isActive bool) (bool, error) {
 	var user User
 
@@ -99,6 +111,16 @@ func (u *User) GetUserByID(db *gorm.DB, id string) (*User, error) {
 	}
 
 	return &user, nil
+}
+
+func (u *User) DeleteUser(db *gorm.DB, userID string) error {
+	err := config.HardDeleteSpecificRecord(db, u, "id = ?", userID)
+	if err != nil {
+		logger.Log.Printf("Error deleting user: %v", err)
+		return err
+	}
+
+	return nil
 }
 
 func (u *User) UpdateUserPassword(db *gorm.DB, user *User) error {

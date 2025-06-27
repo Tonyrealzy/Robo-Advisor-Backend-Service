@@ -85,11 +85,6 @@ func (p *PasswordReset) UpdatePasswordReset(db *gorm.DB, reset *PasswordReset) e
 		logger.Log.Printf("Error updating token in password reset model: %v", err)
 		return err
 	}
-	// err := config.UpdateOneFieldByID(db, reset, reset.ID, "token", reset.Token)
-	// if err != nil {
-	// 	logger.Log.Printf("Error updating token in password reset model: %v", err)
-	// 	return err
-	// }
 
 	return nil
 }

@@ -16,34 +16,50 @@ import (
 func SendSignUpLinkToUser(db *gorm.DB, existingUser *models.User) (string, error) {
 	var password models.PasswordReset
 
-	tokenString := fmt.Sprintf("%s-%s-%s", existingUser.Email, existingUser.ID, time.Now().UTC().String())
-	hashedToken, err := utils.HashPassword(tokenString)
-	if err != nil {
-		logger.Log.Printf("error hashing token string: %v", err)
-		return "", err
+	_, err := password.GetPasswordResetByEmail(db, existingUser.Email)
+	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
+		logger.Log.Printf("error fetching password reset model: %v", err)
+		return "", errors.New("error fetching password reset model")
 	}
 
-	passwordReset := models.PasswordReset{
-		ID:        utils.GenerateUUID(),
-		UserID:    existingUser.ID,
-		Email:     existingUser.Email,
-		Token:     hashedToken,
-		ExpiresAt: time.Now().UTC().Add(time.Minute * 30), // Token expires in 1/2 hour
-	}
-	createErr := password.CreatePasswordReset(db, &passwordReset)
-	if createErr != nil {
-		logger.Log.Printf("error resetting password: %v", createErr)
-		return "", createErr
-	}
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		tokenString := fmt.Sprintf("%s-%s-%s", existingUser.Email, existingUser.ID, time.Now().UTC().String())
+		hashedToken, err := utils.HashPassword(tokenString)
+		if err != nil {
+			logger.Log.Printf("error hashing token string: %v", err)
+			return "", err
+		}
 
-	// Send a link with the reset token to the user's email
-	// emailErr := services.SendResetEmail(existingUser.Email, existingUser.Name, hashedToken)
-	emailErr := models.SendSignUpEmail(existingUser.Email, existingUser.Name, hashedToken)
-	if emailErr != nil {
-		return "", emailErr
+		passwordReset := models.PasswordReset{
+			ID:        utils.GenerateUUID(),
+			UserID:    existingUser.ID,
+			Email:     existingUser.Email,
+			Token:     hashedToken,
+			ExpiresAt: time.Now().UTC().Add(time.Minute * 30), // Token expires in 1/2 hour
+		}
+
+		createErr := password.CreatePasswordReset(db, &passwordReset)
+		if createErr != nil {
+			logger.Log.Printf("error resetting password: %v", createErr)
+			return "", createErr
+		}
+
+		// Send a link with the reset token to the user's email
+		// emailErr := services.SendResetEmail(existingUser.Email, existingUser.Name, hashedToken)
+		emailErr := models.SendSignUpEmail(existingUser.Email, existingUser.Name, hashedToken)
+		if emailErr != nil {
+			return "", emailErr
+		}
+
+		return hashedToken, nil
+	} else {
+		hashedToken, err := ResendLinkToUser(db, existingUser.Email)
+		if err != nil {
+			return "", err
+		}
+
+		return hashedToken, nil
 	}
-	
-	return hashedToken, nil
 }
 
 func ResendLinkToUser(db *gorm.DB, email string) (string, error) {
@@ -77,7 +93,7 @@ func ResendLinkToUser(db *gorm.DB, email string) (string, error) {
 			return "", updateErr
 		}
 	}
-	
+
 	// Send a link with the reset token to the user's email
 	emailErr := models.SendPasswordResetEmail(existingUser.Email, existingUser.Name, reset.Token)
 	if emailErr != nil {
