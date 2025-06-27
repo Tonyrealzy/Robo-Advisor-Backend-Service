@@ -2,6 +2,7 @@ package auth
 
 import (
 	"errors"
+	"fmt"
 
 	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/internal/logger"
 	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/models"
@@ -12,12 +13,14 @@ import (
 
 func Signup(db *gorm.DB, email, password, firstName, lastName, userName string) (*models.User, string, error) {
 	var user models.User
+	var userSession models.UserSession
 
-	existingUser, err := user.GetUserByEmail(db, email)
+	existingUser, err := user.GetUserActivityByEmail(db, email)
 	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
 		logger.Log.Errorf("database error checking user: %v", err)
 		return nil, "", errors.New("database error checking user")
 	}
+
 	if err == nil && existingUser.Email != "" {
 		logger.Log.Warn("email already in use")
 		return nil, "", errors.New("email already in use")
@@ -27,6 +30,20 @@ func Signup(db *gorm.DB, email, password, firstName, lastName, userName string) 
 	if err != nil {
 		logger.Log.Printf("error hashing password: %v", err)
 		return nil, "", err
+	}
+
+	duplicateUser, err := user.GetUserByEmail(db, email)
+	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
+		return nil, "", err
+	}
+
+	if duplicateUser != nil {
+		if err := userSession.HardDeleteUserSession(db, duplicateUser.ID); err != nil {
+			return nil, "", fmt.Errorf("unable to create user with %s: ", duplicateUser.Email)
+		}
+		if err := user.DeleteUser(db, duplicateUser.ID); err != nil {
+			return nil, "", fmt.Errorf("unable to create user with %s: ", duplicateUser.Email)
+		}
 	}
 
 	newUser := models.User{

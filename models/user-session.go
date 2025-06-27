@@ -1,8 +1,8 @@
 package models
 
 import (
-	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/internal/logger"
 	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/config"
+	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/internal/logger"
 	"time"
 
 	"gorm.io/gorm"
@@ -54,6 +54,16 @@ func (u *UserSession) DeleteUserSession(db *gorm.DB, userID string) error {
 	var userSession UserSession
 
 	err := config.DeleteSpecificRecord(db, userSession, "user_id = ?", userID)
+	if err != nil {
+		logger.Log.Printf("Error deleting user session: %v", err)
+		return err
+	}
+
+	return nil
+}
+
+func (u *UserSession) HardDeleteUserSession(db *gorm.DB, userID string) error {
+	err := config.HardDeleteSpecificRecord(db, u, "user_id = ?", userID)
 	if err != nil {
 		logger.Log.Printf("Error deleting user session: %v", err)
 		return err
