@@ -71,6 +71,7 @@ func ResendSignupLinkToUser(db *gorm.DB, email string) (string, error) {
 		logger.Log.Printf("error fetching password reset model: %v", err)
 		return "", errors.New("error fetching password reset model")
 	}
+
 	existingUser, err := user.GetUserByEmail(db, email)
 	if err != nil {
 		logger.Log.Printf("error fetching password reset model: %v", err)
@@ -79,14 +80,22 @@ func ResendSignupLinkToUser(db *gorm.DB, email string) (string, error) {
 
 	_, expiryErr := password.GetPasswordResetByToken(db, reset.Token)
 	if expiryErr != nil {
-		tokenString := fmt.Sprintf("%s-%s-%s", reset.Email, reset.UserID, time.Now().UTC().String())
+		tokenString := fmt.Sprintf("%s-%s-%s", reset.Email, existingUser.ID, time.Now().UTC().String())
 		hashedToken, err := utils.HashPassword(tokenString)
 		if err != nil {
 			logger.Log.Printf("error hashing token string: %v", err)
 			return "", err
 		}
+		reset.UserID = existingUser.ID
 		reset.Token = hashedToken
 		reset.ExpiresAt = time.Now().UTC().Add(time.Minute * 30)
+		updateErr := password.UpdatePasswordReset(db, reset)
+		if updateErr != nil {
+			logger.Log.Printf("error updating token string: %v", updateErr)
+			return "", updateErr
+		}
+	} else {
+		reset.UserID = existingUser.ID
 		updateErr := password.UpdatePasswordReset(db, reset)
 		if updateErr != nil {
 			logger.Log.Printf("error updating token string: %v", updateErr)
