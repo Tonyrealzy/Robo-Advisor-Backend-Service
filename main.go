@@ -33,7 +33,7 @@ func main() {
 	}
 
 	if err := services.InitEmailService(); err != nil {
-		logger.Log.Fatalf("Failed to initialise email service: %v", err)
+		logger.Log.Errorf("Failed to initialise email service: %v", err)
 	}
 
 	db := config.ConnectToDatabase()

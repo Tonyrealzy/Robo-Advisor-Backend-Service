@@ -13,13 +13,20 @@ import (
 var apiClient *sib.APIClient
 
 func InitEmailService() error {
-	var ctx context.Context
+	ctx := context.WithValue(context.Background(), sib.ContextAPIKey, sib.APIKey{
+		Key: config.AppConfig.BrevoKey,
+	})
 
 	cfg := sib.NewConfiguration()
-	cfg.AddDefaultHeader("api-key", config.AppConfig.BrevoKey)
-	cfg.AddDefaultHeader("partner-key", config.AppConfig.BrevoKey)
-
+	cfg.BasePath = "https://api.brevo.com/v3"
 	apiClient = sib.NewAPIClient(cfg)
+	
+	// var ctx context.Context
+	// cfg := sib.NewConfiguration()
+	// cfg.AddDefaultHeader("api-key", config.AppConfig.BrevoKey)
+	// cfg.AddDefaultHeader("partner-key", config.AppConfig.BrevoKey)
+
+	// apiClient = sib.NewAPIClient(cfg)
 	result, resp, err := apiClient.AccountApi.GetAccount(ctx)
 	if err != nil {
 		logger.Log.Println("Error when calling AccountApi->get_account: ", err.Error())
@@ -41,11 +48,11 @@ func SendResetEmail(userEmail, userName, token string) error {
 			Sender:     &sender,
 			To:         to,
 			TemplateId: 1,
-			Params: map[string]interface{}{
+			Params: map[string]any{
 				"reset_link": resetLink,
 				"username":   userName,
 			},
-			Headers: map[string]interface{}{
+			Headers: map[string]any{
 				"X-Mailin-custom": "custom_header_1:custom_value_1|custom_header_2:custom_value_2",
 			},
 		})
