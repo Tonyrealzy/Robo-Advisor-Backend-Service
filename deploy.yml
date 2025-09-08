@@ -1,0 +1,15 @@
+name: Keep Render & Supabase Alive
+
+on:
+  schedule:
+    # Every 10 minutes between 7 a.m. and 7 p.m. UTC+1 (Nigeria time)
+    - cron: "*/10 6-18 * * *"
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping /health endpoint
+        run: |
+          curl -s -o /dev/null -w "%{http_code}" https://robo-advisor-backend-service.onrender.com/health

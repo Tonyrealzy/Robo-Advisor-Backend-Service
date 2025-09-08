@@ -1,1056 +1,1006 @@
 {
-    "swagger": "2.0",
-    "info": {
-        "description": "This is a backend server for authentication and AI interaction.",
-        "title": "Robo-Advisor API",
-        "contact": {},
-        "version": "1.0"
-    },
-    "host": "robo-advisor-backend-service.onrender.com",
-    "basePath": "/",
-    "paths": {
-        "/ai/fetch-response/date": {
-            "get": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Retrieval of previous responses from the AI Service by date range",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "AI"
-                ],
-                "summary": "AI Service",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Page number",
-                        "name": "page",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "description": "Number of items per page",
-                        "name": "limit",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "From Date",
-                        "name": "from",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "To Date",
-                        "name": "to",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/models.AIResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/models.ErrorResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/models.AuthErrorResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/models.ServerErrorResponse"
-                        }
-                    }
-                }
+  "swagger": "2.0",
+  "info": {
+    "description": "This is a backend server for authentication and AI interaction.",
+    "title": "Robo-Advisor API",
+    "contact": {},
+    "version": "1.0"
+  },
+  "host": "https://robo-advisor-backend-service.onrender.com",
+  "basePath": "/",
+  "paths": {
+    "/ai/fetch-response/date": {
+      "get": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "description": "Retrieval of previous responses from the AI Service by date range",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "tags": ["AI"],
+        "summary": "AI Service",
+        "parameters": [
+          {
+            "type": "integer",
+            "description": "Page number",
+            "name": "page",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "description": "Number of items per page",
+            "name": "limit",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "From Date",
+            "name": "from",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "To Date",
+            "name": "to",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/models.AIResponse"
             }
-        },
-        "/ai/fetch-response/days": {
-            "get": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Retrieval of previous responses from the AI Service",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "AI"
-                ],
-                "summary": "AI Service",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Page number",
-                        "name": "page",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "description": "Number of items per page",
-                        "name": "limit",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "description": "Number of days to go back",
-                        "name": "days",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/models.AIResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/models.ErrorResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/models.AuthErrorResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/models.ServerErrorResponse"
-                        }
-                    }
-                }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/models.ErrorResponse"
             }
-        },
-        "/ai/fetch-response/today": {
-            "get": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Retrieval of previous responses from the AI Service",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "AI"
-                ],
-                "summary": "AI Service",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Page number",
-                        "name": "page",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "description": "Number of items per page",
-                        "name": "limit",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/models.AIResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/models.ErrorResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/models.AuthErrorResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/models.ServerErrorResponse"
-                        }
-                    }
-                }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/models.AuthErrorResponse"
             }
-        },
-        "/ai/request": {
-            "post": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Interaction with the AI Service",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "AI"
-                ],
-                "summary": "AI Service",
-                "parameters": [
-                    {
-                        "description": "Interaction with the Golang AI Service",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/models.AIServiceRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/models.AIResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/models.ErrorResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/models.AuthErrorResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/models.ServerErrorResponse"
-                        }
-                    }
-                }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/models.ServerErrorResponse"
             }
-        },
-        "/ai/send-request": {
-            "post": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Interaction with the AI Service",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "AI"
-                ],
-                "summary": "AI Service",
-                "parameters": [
-                    {
-                        "description": "Interaction with the Python AI Service",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/models.AIServiceRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/models.AIResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/models.ErrorResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/models.AuthErrorResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/models.ServerErrorResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/auth/change-password": {
-            "post": {
-                "description": "Generate password reset token and send email",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Auth"
-                ],
-                "summary": "Request password reset",
-                "parameters": [
-                    {
-                        "description": "Token and new password for reset",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/models.PasswordChangeRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/models.PasswordChangeResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/models.ErrorResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/models.ServerErrorResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/auth/login": {
-            "post": {
-                "description": "Authenticate user and return JWT token",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Auth"
-                ],
-                "summary": "User login",
-                "parameters": [
-                    {
-                        "description": "Login credentials",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/models.LoginRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/models.LoginResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/models.ErrorResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/models.AuthErrorResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/models.ServerErrorResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/auth/logout": {
-            "post": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    },
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Invalidate user session/token",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Auth"
-                ],
-                "summary": "User logout",
-                "parameters": [
-                    {
-                        "description": "Email for logout",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/models.LogoutRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/models.LogoutResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/models.AuthErrorResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/models.ServerErrorResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/auth/password-reset": {
-            "post": {
-                "description": "Generate password reset token and send email",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Auth"
-                ],
-                "summary": "Request password reset",
-                "parameters": [
-                    {
-                        "description": "Email for password reset",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/models.PasswordResetRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/models.PasswordResetResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/models.ErrorResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/models.ServerErrorResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/auth/resend-link": {
-            "post": {
-                "description": "Resend verification link to the email used in signup/login",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Auth"
-                ],
-                "summary": "Resend verification link",
-                "parameters": [
-                    {
-                        "description": "email",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/models.PasswordResetRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/models.ResendLinkResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/models.ErrorResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/models.ServerErrorResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/auth/signup": {
-            "post": {
-                "description": "Create a new user account",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Auth"
-                ],
-                "summary": "Register a new user",
-                "parameters": [
-                    {
-                        "description": "Signup details",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/models.SignupRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/models.SignupResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/models.ErrorResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/models.ServerErrorResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/auth/signup/confirm": {
-            "post": {
-                "description": "Use hashed token to confirm email used in signup",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Auth"
-                ],
-                "summary": "Confirm email",
-                "parameters": [
-                    {
-                        "description": "Token and email for confirmation",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/models.ConfirmSignupRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/models.ConfirmSignupResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/models.ErrorResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/models.ServerErrorResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/profile": {
-            "post": {
-                "description": "Get user details by email",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Profile"
-                ],
-                "summary": "User Profile",
-                "parameters": [
-                    {
-                        "description": "Email",
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/models.ProfileRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/models.ProfileResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/models.ErrorResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/models.AuthErrorResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/models.ServerErrorResponse"
-                        }
-                    }
-                }
-            }
+          }
         }
+      }
     },
-    "definitions": {
-        "models.AIResponse": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "$ref": "#/definitions/models.InvestmentAdvice"
-                },
-                "status": {
-                    "type": "string",
-                    "example": "success"
-                }
+    "/ai/fetch-response/days": {
+      "get": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "description": "Retrieval of previous responses from the AI Service",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "tags": ["AI"],
+        "summary": "AI Service",
+        "parameters": [
+          {
+            "type": "integer",
+            "description": "Page number",
+            "name": "page",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "description": "Number of items per page",
+            "name": "limit",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "description": "Number of days to go back",
+            "name": "days",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/models.AIResponse"
             }
-        },
-        "models.AIServiceRequest": {
-            "type": "object",
-            "required": [
-                "age",
-                "amount",
-                "currency",
-                "investmentHorizon",
-                "investmentKnowledge",
-                "investmentPurpose",
-                "location",
-                "riskTolerance"
-            ],
-            "properties": {
-                "age": {
-                    "type": "integer"
-                },
-                "amount": {
-                    "type": "number"
-                },
-                "currency": {
-                    "type": "string"
-                },
-                "investmentHorizon": {
-                    "type": "integer"
-                },
-                "investmentKnowledge": {
-                    "type": "string"
-                },
-                "investmentPurpose": {
-                    "type": "string"
-                },
-                "location": {
-                    "type": "string"
-                },
-                "riskTolerance": {
-                    "type": "string"
-                }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/models.ErrorResponse"
             }
-        },
-        "models.AuthErrorResponse": {
-            "type": "object",
-            "properties": {
-                "error": {
-                    "type": "string",
-                    "example": "Invalid or expired token"
-                },
-                "status": {
-                    "type": "string",
-                    "example": "error"
-                }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/models.AuthErrorResponse"
             }
-        },
-        "models.ConfirmSignupRequest": {
-            "type": "object",
-            "required": [
-                "email",
-                "token"
-            ],
-            "properties": {
-                "email": {
-                    "type": "string"
-                },
-                "token": {
-                    "type": "string"
-                }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/models.ServerErrorResponse"
             }
-        },
-        "models.ConfirmSignupResponse": {
-            "type": "object",
-            "properties": {
-                "message": {
-                    "type": "string",
-                    "example": "User status updated successfully"
-                },
-                "status": {
-                    "type": "string",
-                    "example": "success"
-                }
-            }
-        },
-        "models.ErrorResponse": {
-            "type": "object",
-            "properties": {
-                "error": {
-                    "type": "string",
-                    "example": "Something went wrong"
-                },
-                "status": {
-                    "type": "string",
-                    "example": "error"
-                }
-            }
-        },
-        "models.InvestmentAdvice": {
-            "type": "object",
-            "properties": {
-                "investmentAdvice": {
-                    "type": "string",
-                    "example": "Based on your risk tolerance, we recommend a diversified portfolio of stocks and bonds."
-                }
-            }
-        },
-        "models.LoginRequest": {
-            "type": "object",
-            "required": [
-                "email",
-                "password"
-            ],
-            "properties": {
-                "email": {
-                    "type": "string"
-                },
-                "password": {
-                    "type": "string"
-                }
-            }
-        },
-        "models.LoginResponse": {
-            "type": "object",
-            "properties": {
-                "status": {
-                    "type": "string",
-                    "example": "success"
-                },
-                "token": {
-                    "type": "string",
-                    "example": "jwt.token.here"
-                }
-            }
-        },
-        "models.LogoutRequest": {
-            "type": "object",
-            "required": [
-                "email"
-            ],
-            "properties": {
-                "email": {
-                    "type": "string"
-                }
-            }
-        },
-        "models.LogoutResponse": {
-            "type": "object",
-            "properties": {
-                "message": {
-                    "type": "string",
-                    "example": "Action successful"
-                },
-                "status": {
-                    "type": "string",
-                    "example": "success"
-                }
-            }
-        },
-        "models.PasswordChangeRequest": {
-            "type": "object",
-            "required": [
-                "new_password",
-                "token"
-            ],
-            "properties": {
-                "new_password": {
-                    "type": "string",
-                    "minLength": 8
-                },
-                "token": {
-                    "type": "string"
-                }
-            }
-        },
-        "models.PasswordChangeResponse": {
-            "type": "object",
-            "properties": {
-                "message": {
-                    "type": "string",
-                    "example": "Password changed successfully"
-                },
-                "status": {
-                    "type": "string",
-                    "example": "success"
-                }
-            }
-        },
-        "models.PasswordResetRequest": {
-            "type": "object",
-            "required": [
-                "email"
-            ],
-            "properties": {
-                "email": {
-                    "type": "string"
-                }
-            }
-        },
-        "models.PasswordResetResponse": {
-            "type": "object",
-            "properties": {
-                "message": {
-                    "type": "string",
-                    "example": "Password reset successful"
-                },
-                "status": {
-                    "type": "string",
-                    "example": "success"
-                }
-            }
-        },
-        "models.Profile": {
-            "type": "object",
-            "properties": {
-                "email": {
-                    "type": "string",
-                    "example": "success@gmail.com"
-                },
-                "firstname": {
-                    "type": "string",
-                    "example": "Olu"
-                },
-                "isActive": {
-                    "type": "boolean",
-                    "example": false
-                },
-                "lastname": {
-                    "type": "string",
-                    "example": "Ade"
-                },
-                "username": {
-                    "type": "string",
-                    "example": "olumighty"
-                }
-            }
-        },
-        "models.ProfileRequest": {
-            "type": "object",
-            "required": [
-                "email"
-            ],
-            "properties": {
-                "email": {
-                    "type": "string"
-                }
-            }
-        },
-        "models.ProfileResponse": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "$ref": "#/definitions/models.Profile"
-                },
-                "status": {
-                    "type": "string",
-                    "example": "success"
-                }
-            }
-        },
-        "models.ResendLinkResponse": {
-            "type": "object",
-            "properties": {
-                "message": {
-                    "type": "string",
-                    "example": "Link sent successfully"
-                },
-                "status": {
-                    "type": "string",
-                    "example": "success"
-                }
-            }
-        },
-        "models.ServerErrorResponse": {
-            "type": "object",
-            "properties": {
-                "error": {
-                    "type": "string",
-                    "example": "Internal Server Error"
-                },
-                "status": {
-                    "type": "string",
-                    "example": "error"
-                }
-            }
-        },
-        "models.SignupRequest": {
-            "type": "object",
-            "required": [
-                "email",
-                "first_name",
-                "last_name",
-                "password",
-                "username"
-            ],
-            "properties": {
-                "email": {
-                    "type": "string"
-                },
-                "first_name": {
-                    "type": "string"
-                },
-                "last_name": {
-                    "type": "string"
-                },
-                "password": {
-                    "type": "string"
-                },
-                "username": {
-                    "type": "string"
-                }
-            }
-        },
-        "models.SignupResponse": {
-            "type": "object",
-            "properties": {
-                "message": {
-                    "type": "string",
-                    "example": "User created successfully"
-                },
-                "status": {
-                    "type": "string",
-                    "example": "success"
-                }
-            }
+          }
         }
+      }
     },
-    "securityDefinitions": {
-        "BearerAuth": {
-            "type": "apiKey",
-            "name": "Authorization",
-            "in": "header"
+    "/ai/fetch-response/today": {
+      "get": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "description": "Retrieval of previous responses from the AI Service",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "tags": ["AI"],
+        "summary": "AI Service",
+        "parameters": [
+          {
+            "type": "integer",
+            "description": "Page number",
+            "name": "page",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "description": "Number of items per page",
+            "name": "limit",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/models.AIResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/models.ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/models.AuthErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/models.ServerErrorResponse"
+            }
+          }
         }
+      }
+    },
+    "/ai/request": {
+      "post": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "description": "Interaction with the AI Service",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "tags": ["AI"],
+        "summary": "AI Service",
+        "parameters": [
+          {
+            "description": "Interaction with the Golang AI Service",
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/models.AIServiceRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/models.AIResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/models.ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/models.AuthErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/models.ServerErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/ai/send-request": {
+      "post": {
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "description": "Interaction with the AI Service",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "tags": ["AI"],
+        "summary": "AI Service",
+        "parameters": [
+          {
+            "description": "Interaction with the Python AI Service",
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/models.AIServiceRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/models.AIResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/models.ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/models.AuthErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/models.ServerErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/auth/change-password": {
+      "post": {
+        "description": "Generate password reset token and send email",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "tags": ["Auth"],
+        "summary": "Request password reset",
+        "parameters": [
+          {
+            "description": "Token and new password for reset",
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/models.PasswordChangeRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/models.PasswordChangeResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/models.ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/models.ServerErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "description": "Authenticate user and return JWT token",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "tags": ["Auth"],
+        "summary": "User login",
+        "parameters": [
+          {
+            "description": "Login credentials",
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/models.LoginRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/models.LoginResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/models.ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/models.AuthErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/models.ServerErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "security": [
+          {
+            "BearerAuth": []
+          },
+          {
+            "BearerAuth": []
+          }
+        ],
+        "description": "Invalidate user session/token",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "tags": ["Auth"],
+        "summary": "User logout",
+        "parameters": [
+          {
+            "description": "Email for logout",
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/models.LogoutRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/models.LogoutResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/models.AuthErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/models.ServerErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/auth/password-reset": {
+      "post": {
+        "description": "Generate password reset token and send email",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "tags": ["Auth"],
+        "summary": "Request password reset",
+        "parameters": [
+          {
+            "description": "Email for password reset",
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/models.PasswordResetRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/models.PasswordResetResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/models.ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/models.ServerErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/auth/resend-link": {
+      "post": {
+        "description": "Resend verification link to the email used in signup/login",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "tags": ["Auth"],
+        "summary": "Resend verification link",
+        "parameters": [
+          {
+            "description": "email",
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/models.PasswordResetRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/models.ResendLinkResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/models.ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/models.ServerErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/auth/signup": {
+      "post": {
+        "description": "Create a new user account",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "tags": ["Auth"],
+        "summary": "Register a new user",
+        "parameters": [
+          {
+            "description": "Signup details",
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/models.SignupRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/models.SignupResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/models.ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/models.ServerErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/auth/signup/confirm": {
+      "post": {
+        "description": "Use hashed token to confirm email used in signup",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "tags": ["Auth"],
+        "summary": "Confirm email",
+        "parameters": [
+          {
+            "description": "Token and email for confirmation",
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/models.ConfirmSignupRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/models.ConfirmSignupResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/models.ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/models.ServerErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "description": "Returns service health status",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "tags": ["Health"],
+        "summary": "Health Check",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/models.HealthResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/models.ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/models.AuthErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/models.ServerErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/profile": {
+      "post": {
+        "description": "Get user details by email",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "tags": ["Profile"],
+        "summary": "User Profile",
+        "parameters": [
+          {
+            "description": "Email",
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/models.ProfileRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/models.ProfileResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/models.ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/models.AuthErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/models.ServerErrorResponse"
+            }
+          }
+        }
+      }
     }
+  },
+  "definitions": {
+    "models.AIResponse": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/models.InvestmentAdvice"
+        },
+        "status": {
+          "type": "string",
+          "example": "success"
+        }
+      }
+    },
+    "models.AIServiceRequest": {
+      "type": "object",
+      "required": [
+        "age",
+        "amount",
+        "currency",
+        "investmentHorizon",
+        "investmentKnowledge",
+        "investmentPurpose",
+        "location",
+        "riskTolerance"
+      ],
+      "properties": {
+        "age": {
+          "type": "integer"
+        },
+        "amount": {
+          "type": "number"
+        },
+        "currency": {
+          "type": "string"
+        },
+        "investmentHorizon": {
+          "type": "integer"
+        },
+        "investmentKnowledge": {
+          "type": "string"
+        },
+        "investmentPurpose": {
+          "type": "string"
+        },
+        "location": {
+          "type": "string"
+        },
+        "riskTolerance": {
+          "type": "string"
+        }
+      }
+    },
+    "models.AuthErrorResponse": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string",
+          "example": "Invalid or expired token"
+        },
+        "status": {
+          "type": "string",
+          "example": "error"
+        }
+      }
+    },
+    "models.ConfirmSignupRequest": {
+      "type": "object",
+      "required": ["email", "token"],
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "token": {
+          "type": "string"
+        }
+      }
+    },
+    "models.ConfirmSignupResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "User status updated successfully"
+        },
+        "status": {
+          "type": "string",
+          "example": "success"
+        }
+      }
+    },
+    "models.ErrorResponse": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string",
+          "example": "Something went wrong"
+        },
+        "status": {
+          "type": "string",
+          "example": "error"
+        }
+      }
+    },
+    "models.HealthResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "timestamp": {
+          "type": "string"
+        }
+      }
+    },
+    "models.InvestmentAdvice": {
+      "type": "object",
+      "properties": {
+        "investmentAdvice": {
+          "type": "string",
+          "example": "Based on your risk tolerance, we recommend a diversified portfolio of stocks and bonds."
+        }
+      }
+    },
+    "models.LoginRequest": {
+      "type": "object",
+      "required": ["email", "password"],
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    },
+    "models.LoginResponse": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "example": "success"
+        },
+        "token": {
+          "type": "string",
+          "example": "jwt.token.here"
+        }
+      }
+    },
+    "models.LogoutRequest": {
+      "type": "object",
+      "required": ["email"],
+      "properties": {
+        "email": {
+          "type": "string"
+        }
+      }
+    },
+    "models.LogoutResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Action successful"
+        },
+        "status": {
+          "type": "string",
+          "example": "success"
+        }
+      }
+    },
+    "models.PasswordChangeRequest": {
+      "type": "object",
+      "required": ["new_password", "token"],
+      "properties": {
+        "new_password": {
+          "type": "string",
+          "minLength": 8
+        },
+        "token": {
+          "type": "string"
+        }
+      }
+    },
+    "models.PasswordChangeResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Password changed successfully"
+        },
+        "status": {
+          "type": "string",
+          "example": "success"
+        }
+      }
+    },
+    "models.PasswordResetRequest": {
+      "type": "object",
+      "required": ["email"],
+      "properties": {
+        "email": {
+          "type": "string"
+        }
+      }
+    },
+    "models.PasswordResetResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Password reset successful"
+        },
+        "status": {
+          "type": "string",
+          "example": "success"
+        }
+      }
+    },
+    "models.Profile": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "example": "success@gmail.com"
+        },
+        "firstname": {
+          "type": "string",
+          "example": "Olu"
+        },
+        "isActive": {
+          "type": "boolean",
+          "example": false
+        },
+        "lastname": {
+          "type": "string",
+          "example": "Ade"
+        },
+        "username": {
+          "type": "string",
+          "example": "olumighty"
+        }
+      }
+    },
+    "models.ProfileRequest": {
+      "type": "object",
+      "required": ["email"],
+      "properties": {
+        "email": {
+          "type": "string"
+        }
+      }
+    },
+    "models.ProfileResponse": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/models.Profile"
+        },
+        "status": {
+          "type": "string",
+          "example": "success"
+        }
+      }
+    },
+    "models.ResendLinkResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Link sent successfully"
+        },
+        "status": {
+          "type": "string",
+          "example": "success"
+        }
+      }
+    },
+    "models.ServerErrorResponse": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string",
+          "example": "Internal Server Error"
+        },
+        "status": {
+          "type": "string",
+          "example": "error"
+        }
+      }
+    },
+    "models.SignupRequest": {
+      "type": "object",
+      "required": ["email", "first_name", "last_name", "password", "username"],
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "first_name": {
+          "type": "string"
+        },
+        "last_name": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "username": {
+          "type": "string"
+        }
+      }
+    },
+    "models.SignupResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "User created successfully"
+        },
+        "status": {
+          "type": "string",
+          "example": "success"
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "BearerAuth": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
+    }
+  }
 }
