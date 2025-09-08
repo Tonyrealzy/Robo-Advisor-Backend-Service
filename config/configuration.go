@@ -2,6 +2,7 @@ package config
 
 import (
 	"os"
+	"strings"
 
 	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/internal/logger"
 	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/models/repository"
@@ -10,6 +11,13 @@ import (
 )
 
 var AppConfig repository.Config
+
+func maskValue(val string) string {
+	if len(val) <= 4 {
+		return "****"
+	}
+	return val[:2] + strings.Repeat("*", len(val)-4) + val[len(val)-2:]
+}
 
 func LoadEnv() (repository.Config, error) {
 	_, loadErr := os.Stat(".env")
@@ -43,6 +51,36 @@ func LoadEnv() (repository.Config, error) {
 		MailSmtpUsername: os.Getenv("MAIL_SMTP_USERNAME"),
 		MailSmtpPassword: os.Getenv("MAIL_SMTP_PASSWORD"),
 	}
+
+	required := map[string]string{
+		"POSTGRES_HOST":      AppConfig.PostgresHost,
+		"POSTGRES_PORT":      AppConfig.PostgresPort,
+		"POSTGRES_USER":      AppConfig.PostgresUser,
+		"POSTGRES_PASSWORD":  AppConfig.PostgresPassword,
+		"POSTGRES_DB":        AppConfig.PostgresDB,
+		"POSTGRES_SSLMODE":   AppConfig.PostgresSslMode,
+		"JWT_SECRET":         AppConfig.JwtSecret,
+		"JWT_EXPIRATION":     AppConfig.JwtExpiration,
+		"AI_SERVICE":         AppConfig.AiService,
+		"GOOGLE_API_KEY":     AppConfig.ApiKey,
+		"FRONTEND_HOST":      AppConfig.FrontendHost,
+		"PORT":               AppConfig.Port,
+		"BREVO_KEY":          AppConfig.BrevoKey,
+		"APP_ENV":            AppConfig.AppEnv,
+		"MAIL_SENDER":        AppConfig.MailSender,
+		"MAIL_SMTP_HOST":     AppConfig.MailSmtpHost,
+		"MAIL_SMTP_USERNAME": AppConfig.MailSmtpUsername,
+		"MAIL_SMTP_PASSWORD": AppConfig.MailSmtpPassword,
+	}
+
+	for key, val := range required {
+		if val == "" {
+			logger.Log.Fatalf("❌ Missing required environment variable: %s", key)
+		} else {
+			logger.Log.Printf("✅ %s is set (%s)", key, maskValue(val))
+		}
+	}
+
 	logger.Log.Println("Loaded .env file successfully")
 
 	return AppConfig, nil
