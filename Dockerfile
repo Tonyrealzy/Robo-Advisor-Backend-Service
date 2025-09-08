@@ -7,6 +7,9 @@ WORKDIR /app
 # Copy all files from the current directory to the /app directory in the container
 COPY . .
 
+# Expose the port the app will run on
+EXPOSE 8080
+
 # Install dependencies and build the Go application
 RUN go mod tidy && go build -o app
 

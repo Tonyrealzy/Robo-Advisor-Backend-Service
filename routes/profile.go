@@ -12,4 +12,7 @@ func SetupProfileRoutes(router *gin.RouterGroup, controller profile.Controller) 
 	protected.Use(middleware.JWTAuthMiddleware(controller.Db))
 
 	protected.POST("profile", controller.GetProfile)
+
+	health := router.Group("/")
+	health.GET("health", controller.GetHealth)
 }

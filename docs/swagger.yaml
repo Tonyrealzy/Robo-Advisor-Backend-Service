@@ -73,6 +73,15 @@ definitions:
         example: error
         type: string
     type: object
+  models.HealthResponse:
+    properties:
+      message:
+        type: string
+      status:
+        type: string
+      timestamp:
+        type: string
+    type: object
   models.InvestmentAdvice:
     properties:
       investmentAdvice:
@@ -653,6 +662,33 @@ paths:
       summary: Confirm email
       tags:
       - Auth
+  /health:
+    get:
+      consumes:
+      - application/json
+      description: Returns service health status
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.HealthResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.AuthErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ServerErrorResponse'
+      summary: Health Check
+      tags:
+      - Health
   /profile:
     post:
       consumes:

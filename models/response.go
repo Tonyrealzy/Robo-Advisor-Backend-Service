@@ -68,6 +68,12 @@ type Profile struct {
 }
 
 type ProfileResponse struct {
-	Status string `json:"status" example:"success"`
-	Data   Profile   `json:"data,omitempty"`
+	Status string  `json:"status" example:"success"`
+	Data   Profile `json:"data,omitempty"`
+}
+
+type HealthResponse struct {
+	Status    string `json:"status"  example:"success"`
+	Message   string `json:"message" example:"Server is up and running"`
+	Timestamp string `json:"timestamp" example:"2025-09-07T18:45:01Z"`
 }
