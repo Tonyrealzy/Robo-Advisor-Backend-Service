@@ -48,11 +48,11 @@ func SendResetEmail(userEmail, userName, token string) error {
 			Sender:     &sender,
 			To:         to,
 			TemplateId: 1,
-			Params: map[string]interface{}{
+			Params: map[string]any{
 				"reset_link": resetLink,
 				"username":   userName,
 			},
-			Headers: map[string]interface{}{
+			Headers: map[string]any{
 				"X-Mailin-custom": "custom_header_1:custom_value_1|custom_header_2:custom_value_2",
 			},
 		})
