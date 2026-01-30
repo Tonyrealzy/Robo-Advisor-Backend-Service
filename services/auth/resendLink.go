@@ -48,14 +48,16 @@ func SendSignUpLinkToUser(db *gorm.DB, existingUser *models.User) (string, error
 		// emailErr := services.SendResetEmail(existingUser.Email, existingUser.Name, hashedToken)
 		emailErr := models.SendSignUpEmail(existingUser.Email, existingUser.Name, hashedToken)
 		if emailErr != nil {
-			return "", emailErr
+			logger.Log.Printf("error sending email: %v", emailErr)
+			// return "", emailErr
 		}
 
 		return hashedToken, nil
 	} else {
 		hashedToken, err := ResendSignupLinkToUser(db, existingUser.Email)
 		if err != nil {
-			return "", err
+			logger.Log.Printf("error sending email: %v", err)
+			// return "", err
 		}
 
 		return hashedToken, nil
@@ -106,7 +108,8 @@ func ResendSignupLinkToUser(db *gorm.DB, email string) (string, error) {
 	// Send a link with the signup token to the user's email
 	emailErr := models.SendSignUpEmail(existingUser.Email, existingUser.Name, reset.Token)
 	if emailErr != nil {
-		return "", emailErr
+		logger.Log.Printf("error sending email: %v", emailErr)
+		// return "", emailErr
 	}
 
 	return reset.Token, nil
@@ -147,7 +150,8 @@ func ResendLinkToUser(db *gorm.DB, email string) (string, error) {
 	// Send a link with the reset token to the user's email
 	emailErr := models.SendPasswordResetEmail(existingUser.Email, existingUser.Name, reset.Token)
 	if emailErr != nil {
-		return "", emailErr
+		logger.Log.Printf("error sending email: %v", emailErr)
+		// return "", emailErr
 	}
 
 	return reset.Token, nil
