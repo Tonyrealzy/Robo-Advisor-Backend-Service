@@ -10,8 +10,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// @Summary      AI Service
-// @Description  Interaction with the AI Service
+// @Summary      Internal AI Service
+// @Description  Interaction with the Internal AI Service
 // @Tags         AI
 // @Accept       json
 // @Produce      json

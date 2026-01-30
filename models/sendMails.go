@@ -5,6 +5,7 @@ import (
 	"github.com/Tonyrealzy/Robo-Advisor-Backend-Service/internal/logger"
 
 	"bytes"
+	"crypto/tls"
 	"fmt"
 	"html/template"
 	"os"
@@ -70,6 +71,7 @@ func SendSignUpEmail(toEmail, username, token string) error {
 	m.SetBody("text/html", body.String())
 
 	d := gomail.NewDialer(smtpHost, smtpPort, smtpUser, smtpPass)
+	d.TLSConfig = &tls.Config{ServerName: smtpHost, InsecureSkipVerify: false}
 
 	if err := d.DialAndSend(m); err != nil {
 		logger.Log.Printf("failed to send email: %v", err)
@@ -122,7 +124,7 @@ func SendPasswordResetEmail(toEmail, username, token string) error {
 	m.SetBody("text/html", body.String())
 
 	d := gomail.NewDialer(smtpHost, smtpPort, smtpUser, smtpPass)
-
+	d.TLSConfig = &tls.Config{ServerName: smtpHost, InsecureSkipVerify: false}
 	if err := d.DialAndSend(m); err != nil {
 		logger.Log.Printf("failed to send email: %v", err)
 		return fmt.Errorf("failed to send email: %v", err)
