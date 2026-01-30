@@ -62,7 +62,8 @@ func ResetPassword(db *gorm.DB, email string) (string, error) {
 	// You would send a link with the reset token to the user's email
 	emailErr := models.SendPasswordResetEmail(existingUser.Email, existingUser.Name, hashedToken)
 	if emailErr != nil {
-		return "", emailErr
+		logger.Log.Printf("error sending email: %v", emailErr)
+		// return "", emailErr
 	}
 
 	return hashedToken, nil
