@@ -29,7 +29,7 @@ func NewAIService(apiKey string) (*AIServiceImpl, error) {
 func (a *AIServiceImpl) GetAIResponse(message string) (string, error) {
 
 	ctx := context.Background()
-	model := a.client.GenerativeModel("models/gemini-1.5-flash-latest")
+	model := a.client.GenerativeModel("models/gemini-2.5-flash")
 
 	resp, err := model.GenerateContent(ctx, genai.Text(message))
 	if err != nil {
